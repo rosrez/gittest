@@ -1,0 +1,73 @@
+git log
+-------
+Lists all commits, newest first.
+
+We can specify individual commits, which is used to display that commits and all commits before that:
+
+git log c7ffaf6a4e3b17743173e07911c6fa1a1686375a
+
+or we can just provide a shorthand version of the commit hash, like so:
+
+git log c7ffa
+
+git will only complain if the first digits are ambiguous, in which case all we need to add a few extra digits to resolve the ambiguity.
+
+We can specify ranges of commits:
+
+git log abb9..c7ffa
+
+NOTE: Remember the right order of commits, this has to be chronological (the earlier commit must come first).
+
+HEAD means the newest commit (in the current branch).
+
+NOTE: 'git log HEAD' is equivalent to just 'git log'.
+
+There is a few shortcuts that allow you to modify the commit hash/hash range.
+
+^ - goes back one commit, can be applied multiple times, like this:
+
+git log HEAD^^^
+
+The latter is more easily obtained with tilde:
+
+git log HEAD~3
+
+We can also apply the same notations to hashes:
+
+git log c7ffa^
+
+Or to ranges:
+
+git log HEAD~4..HEAD~2
+
+We can display a less verbose version (hash + commit message) with this command:
+
+git log --pretty=oneline
+
+===========================
+
+EXAMPLE 1 - regular output
+
+git log
+commit c7ffaf6a4e3b17743173e07911c6fa1a1686375a  <---------- NEWEST COMMIT
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Sun Nov 22 22:54:21 2015 +0100
+
+    Global settings
+
+commit abb90e9088692e0594fa714f4e5be1b8e4a25276  <----------- EARLIER COMMIT
+Author: rosrez <rosrez@o2.pl>
+Date:   Sun Nov 22 22:21:45 2015 +0100
+
+    Initial commit
+
+--------------------------
+
+EXAMPLE 2 - one line 'condensed' output
+
+git log --pretty=oneline
+c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
+abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
+
+
+
