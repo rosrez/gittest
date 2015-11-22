@@ -1,0 +1,22 @@
+The bare minimum global setttings:
+
+$ git config --global user.name "Oleg Rosowiecki"
+$ git config --global user.email "rosrez@o2.pl"
+$ 
+$ git config --global color.ui "auto"
+
+Optionally, you can create an SSH key pair to access your repo via SSH.
+
+$ ssh-keygen -t rsa -C"rosrez@o2.pl"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/admin/.ssh/id_rsa):  
+Created directory '/home/admin/.ssh'.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/admin/.ssh/id_rsa.
+Your public key has been saved in /home/admin/.ssh/id_rsa.pub.
+....
+
+-C just takes a comment and can be whatever we need, but it's common practice to use your e-mail address.
+
+
