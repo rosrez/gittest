@@ -1,3 +1,4 @@
 A new idea - the file to test branching.
 
 Another new idea - text will appear in local shadow copies, if pulled.
+3rd idea
