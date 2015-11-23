@@ -1,0 +1,101 @@
+git branch name
+---------------
+
+Creates a branch named name. To switch to the new branch, we use the checkout command:
+
+git checkout name
+
+We can also combine the two commands into one
+
+git checkout -b name
+
+To see which branch is currently active (checked out), use the 'branch' command without arguments:
+
+git branch
+
+To see which branches are available at a remote (repo), use the 'branch -a' command:
+
+git branch -a
+
+Whenever you do a pull, if there is a new branch at a remote that isn't KNOWN locally yet, the
+output will inform you that you now have new branch:
+
+git pull
+remote: Counting objects: 16, done.
+remote: Compressing objects: 100% (12/12), done.
+remote: Total 16 (delta 3), reused 15 (delta 2), pack-reused 0
+Unpacking objects: 100% (16/16), done.
+From https://github.com/rosrez/gittest
+   abb90e9..fd3f9cf  master     -> origin/master
+ * [new branch]      newidea    -> origin/newidea    <---- INFO ABOUT A NEW BRANCH
+Updating abb90e9..fd3f9cf
+
+NOTE: The above output indicates that THERE IS A BRANCH in the remote repo, but it doesn't download it. To prove this, we can issue the 'git branch [-a]' command:
+
+$ git branch
+* master
+
+No local copy of 'newidea'. We can see more with 'git branch -a':
+
+$ git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/newidea
+
+This tells us that there is a 'newidea' branch at the remote (repo). But apart from that, our repo has no affiliation with that branch yet.
+
+We have to do 'git checkout' to actually create a local shadow copy of the new branch and to have it track changes to the remote branch:
+
+git checkout newidea
+Branch newidea set up to track remote branch newidea from origin.
+Switched to a new branch 'newidea'
+
+NOTE. The sentence is clear: we are now tracking a remote branch with the same name. We also have switch to it, so commits will be going to this very branch until we do another checkout.
+
+NOTE. After 'git checkout' the tracking is established, so git push/pulls will know which remote branch to push to/pull from. However, the creator of the branch does not have the association set up by default, so git push might not succeed. We can set it up by issuing the 'git branch --set-upstream' command:
+
+git branch --set-upstream origin newidea
+
+
+-----------------------
+
+NOTE.
+
+git branch --set-upstream origin newidea
+The --set-upstream flag is deprecated and will be removed. Consider using --track or --set-upstream-to
+Branch origin set up to track local branch newidea.
+
+------------------------
+
+NOTE. set default push behavior along these lines:
+
+git push
+
+warning: push.default is unset; its implicit value has changed in
+Git 2.0 from 'matching' to 'simple'. To squelch this message
+and maintain the traditional behavior, use:
+
+  git config --global push.default matching
+
+To squelch this message and adopt the new behavior now, use:
+
+  git config --global push.default simple
+
+When push.default is set to 'matching', git will push local branches
+to the remote branches that already exist with the same name.
+
+Since Git 2.0, Git defaults to the more conservative 'simple'
+behavior, which only pushes the current branch to the corresponding
+remote branch that 'git pull' uses to update the current branch.
+
+See 'git help config' and search for 'push.default' for further information.
+(the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+'current' instead of 'simple' if you sometimes use older versions of Git)
+
+fatal: The current branch newidea has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin newidea
+
+
