@@ -1,0 +1,36 @@
+1. It's possible to have as many remote repositories as you wish.
+2. If you've cloned, the DEFAULT NAME is origin. The 'origin' repo doesn't any special properties.
+
+3. To see the remotes, issue the following command:
+
+$ git remote -v
+origin  https://rosrez@github.com/rosrez/gittest.git (fetch)
+origin  https://rosrez@github.com/rosrez/gittest.git (push)
+
+4. Use this to add a remote:
+
+git remote add another
+
+We've added a remote named 'another' with the SAME address as the existing remote. Here is the result:
+
+$ git remote -v
+another https://rosrez@github.com/rosrez/gittest.git (fetch)
+another https://rosrez@github.com/rosrez/gittest.git (push)
+origin  https://rosrez@github.com/rosrez/gittest.git (fetch)
+origin  https://rosrez@github.com/rosrez/gittest.git (push)
+
+NOTE. As we can see, no checking for duplicates is being performed. In fact, there is no network activity during 'git remote add', all it does is just add string literals. It simply associates a name with an address.
+
+NOTE. This allows us to use alternative ways of communicating with the same repository. We may add a remote with the same address annd just change the protocol portion, for example, specify git:rosrez@github.com instead of https://rosrez@github.com. This would allow us to use the git protocol whenever it's available, and fall back to https when we're behind a corporate firewall.
+
+5. We can set up an ad-hoc git server to actually serve our local repository using the git protocol. The command is as follows:
+
+git remote add oleg git://mybox/repo1.git
+
+We would have to open TCP port 9418 on mybox to actually make the repo visible to access from outside.
+
+6. git fetch 
+
+git pull = git fetch + git merge
+
+
