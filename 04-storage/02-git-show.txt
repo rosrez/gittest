@@ -4,7 +4,7 @@ Shows the last commit (all differences individually, one by one in a diff/patch 
 
 We can view changes from a range of commits, this is done by 'git log':
 
-git log HEAD^^..HEAD -p  <--------------- -p stants for 'patch'
+git log HEAD^^..HEAD -p  <--------------- -p stands for 'patch'
 
 ====================
 

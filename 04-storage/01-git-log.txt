@@ -2,25 +2,54 @@ git log
 -------
 Lists all commits, newest first.
 
-We can specify individual commits, which is used to display that commits and all commits before that:
+git log --pretty=oneline
+------------------------
+Lists all commits, with only one line per commit, like this:
 
-git log c7ffaf6a4e3b17743173e07911c6fa1a1686375a
+git log --pretty=oneline
+41aae77dfe9668bc859d046f830faec0222f686d Added remotes
+91d29ecde9dc4d1d0153de24885a526e29933898 Additional notes on setting up tracking for remote branches locally
+3b67d2a3b4929484caa1482fea5d0eb1e5be8003 Added branching
+fd3f9cff94719ffbc5d63d2e50364b094db6c7ea Added basic workflow               <---- C2
+3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions    <---- C1
+c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
+abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
 
-or we can just provide a shorthand version of the commit hash, like so:
+git log hash
+------------
+If can specify an individual hash (i.e. commit), then the command will display that commit and all commits before that:
 
-git log c7ffa
+$ git log --pretty=oneline 3123534c8a8ee67adebc02e01b93455f215fbffd
+3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions
+c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
+abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
+
+We can just provide a shorthand version of the commit hash, like below, and get the same output:
+
+$ git log --pretty=oneline 31235
+3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions
+c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
+abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
 
 git will only complain if the first digits are ambiguous, in which case all we need to add a few extra digits to resolve the ambiguity.
 
-We can specify ranges of commits:
+git log hash1..hash2
+-------------------
+Displays a range of commits starting from hash1 (exclusive) to hash2 (inclusive):
 
-git log abb9..c7ffa
+$ git log --pretty=oneline 31235..fd3f9c
+fd3f9cff94719ffbc5d63d2e50364b094db6c7ea Added basic workflow
+
+Above, we labelled 31235 as C1 and fd3f9 as C2. C1 and C2 are just a single commit apart, i.e. C2 immediatele follows C1. As we can see, only C2 is output.
 
 NOTE: Remember the right order of commits, this has to be chronological (the earlier commit must come first).
 
 HEAD means the newest commit (in the current branch).
 
 NOTE: 'git log HEAD' is equivalent to just 'git log'.
+
+Commit notation shortcuts
+-------------------------
 
 There is a few shortcuts that allow you to modify the commit hash/hash range.
 
@@ -40,10 +69,6 @@ Or to ranges:
 
 git log HEAD~4..HEAD~2
 
-We can display a less verbose version (hash + commit message) with this command:
-
-git log --pretty=oneline
-
 ===========================
 
 EXAMPLE 1 - regular output
@@ -60,14 +85,5 @@ Author: rosrez <rosrez@o2.pl>
 Date:   Sun Nov 22 22:21:45 2015 +0100
 
     Initial commit
-
---------------------------
-
-EXAMPLE 2 - one line 'condensed' output
-
-git log --pretty=oneline
-c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
-abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
-
 
 
