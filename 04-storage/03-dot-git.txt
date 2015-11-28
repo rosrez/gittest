@@ -1,0 +1,21 @@
+cd .git
+
+ll HEAD
+
+-rw-rw-r--.  1 admin admin   23 Nov 28 21:07 HEAD
+
+cat HEAD
+ref: refs/heads/master
+
+This refers to a subdirectory within .git, so we can 'cd' to it:
+
+$ cd refs/heads
+
+$ ll
+total 4
+-rw-rw-r--. 1 admin admin 41 Nov 28 21:54 master
+
+cat master 
+b5f17cee9adf8ee1e781b1cf424690cf79c69bb9
+
+This is the latest commit within this branch (master).
