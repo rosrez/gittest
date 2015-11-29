@@ -146,10 +146,62 @@ git checkout mediumfeature
 
 The latter form assumes that there is NO LOCAL BRANCH CALLED 'mediumfeature'. 
 
-After checking out the remote branch, we create a local shadow copy of it and automatically switch to it.
+After checking out the remote branch, we create a local shadow copy of it and automatically switch to it. With this command, we also ENABLE TRACKING changes to the remote repo -- so that subsequent git-pull requests know where to look for updates AND subsequent git-push commands also know where to push local changes. From now on, this branch can be synchronized with the remote by simple
 
+git pull
+AND
+git push
 
+commands, without arguments.
 
+6. If we now make a change and commit it in the repository that checked out the branch created somewhere else, all you need to do is git-add, git-commit and git-push. git-push will work just fine because there is an association between the local and remote branch.
+
+7. If we now want to pull the recent changes (6) in the repository where the branch was originally created, we run into a problem:
+
+$ git pull
+remote: Counting objects: 7, done.
+remote: Compressing objects: 100% (7/7), done.
+remote: Total 7 (delta 1), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (7/7), done.
+From https://github.com/rosrez/gittest
+   4d1f4af..a72dfc0  master     -> origin/master
+   c0ca15e..3b0699e  mediumfeature -> origin/mediumfeature
+There is no tracking information for the current branch.
+Please specify which branch you want to merge with.
+See git-pull(1) for details
+
+    git pull <remote> <branch>
+
+If you wish to set tracking information for this branch you can do so with:
+
+    git branch --set-upstream-to=origin/<branch> mediumfeature
+
+* * * * *
+
+The output suggests what we have to do: issue this command
+
+git branch --set-upstream mediumfeature origin/mediumfeature (DEPRECATED!)
+
+OR
+
+git branch --set-upstream-to=origin/mediumfeature mediumfeature
+Branch mediumfeature set up to track remote branch mediumfeature from origin.
+
+This establishes a bi-directional linkage between the local and remote branch. git doesn't assume that this kind of linkage is created by default when you git-push to a remote branch. So the command we invoked initially:
+
+git push origin mediumfeature
+
+did create a remote branch, did update that branch with our local branch data, but it didn't establish a link in the opposite direction. So it is possible to do one-time commits to branches of our choice without actually having permanent local copies of those branches.
+
+7. Now re-issue the git-pull command in the repo that created the branch. This time it succeeds:
+
+$ git pull
+Updating c0ca15e..3b0699e
+Fast-forward
+ mediumfeature.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+NOTE that there is no network activity involved this time: git already cached the changes it had downloaded at the previous attempt to pull, so now it just merged the changes into my local branch.
 
 
 ++++++++++++++++++++++++++++++++++++++++++++
@@ -169,6 +221,84 @@ $ git branch
 * mediumfeature
   newidea
 
+
+++++++++++++++++++++++++++++++++++++++++++++
+
+EXAMPLE: GIT'S INTERNAL MANAGEMENT OF BRANCHES
+----------------------------------------------
+
+1. LOCAL BRANCHES are stored this way.
+
+$ cd .git/refs/heads
+
+$ ls
+master  mediumfeature  newidea
+
+Here we have the 'heads' of all our branches, i.e we track the most recent commits to those branches here. If we look at the contents of mediumfeature, we'll see the hash of the most recent commit:
+
+$ cat mediumfeature 
+3b0699e0633ad1aac0b8cb48aa434a9ab9263a03
+
+2. The actual storage area is this.
+
+$ cd .git/objects
+
+$ ls
+
+00  0e  13  1c  25  31  3b  42  4d  57  5e  65  6e  91  94  97  9c  ab  b8  be  c1  c6  c8  e8  f5  fd    pack
+0a  11  15  21  2f  38  41  44  51  5d  63  69  86  92  96  98  a7  b5  bd  c0  c2  c7  d9  ed  f9  info
+
+These are directories with first digits of our hashes. We can pick a directory that matches our mediumfeature (3b) head and see what's inside the directory:
+
+tree 3b
+3b
+├── 0699e0633ad1aac0b8cb48aa434a9ab9263a03
+└── 67d2a3b4929484caa1482fea5d0eb1e5be8003
+
+The name of the first of the files (3b0699...) matches our head for mediumfeature. This file stores the contents of the commit, i.e. the actual data as well as some info like the actual human-readable names of files, etc.
+
+++++++++++++++++++++++++++++++++++++++++++++
+
+EXAMPLE: GOING BACK TO SNAPSHOTS OF ANY COMMIT
+------------------------------------------
+
+1. Suppose we'd like to go back to an individual commit made some time ago and see exactly how things looked like at the time of that commit. We just need to check out that commit (two commits apart from the current branch's head):
+
+$ git checkout c0ca15e
+Note: checking out 'c0ca15e'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+
+  git checkout -b <new-branch-name>
+
+HEAD is now at c0ca15e... Medium feature
+
+* * * * *
+
+The 'detached HEAD' state means that we checked out something that is not the branch's latest state because it's a commit done previously. However, as the output suggests, we can view all the files, even perform commits and then forget about them if we check out some other commit. Or, we can create a branch out of the checked out code and the commits we make.
+
+This allows us to get to arbitrarily old commits at any point in time and create branches out of them.
+
+This is possible because a branch name is just really a human-readable filename in the .git/refs/heads, and the branch's head is the hash that is stored in the corresponding branch head file.
+
+After we do the checkout, we can peek at the branch's head file and see that it retains the true head for the branch, so the checkout is seen as temporary until we create a new branch out of it.
+
+cat .git/refs/heads/mediumfeature 
+0c4e74b97fc2e81758d85cb151d17f014bf53490   <---- THE TRUE HEAD REMAINS THE SAME DESPITE THE CHECKOUT OF c0ca15e (HEAD^^)
+
+
+++++++++++++++++++++++++++++++++++++++++++++
+
+EXAMPLE: DISPLAYING THE DAG (Directed Acyclic Graph) OF A GIT REPO.
+
+git log --graph --all
+
+You can also use gitx or github's web interface. And a multitude of other tools.
 
 ++++++++++++++++++++++++++++++++++++++++++++
 
