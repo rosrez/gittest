@@ -1,3 +1,6 @@
+BASICS OF BRANCHING
+===================
+
 git branch name
 ---------------
 
@@ -21,6 +24,72 @@ To see which branches are available at a remote (repo), use the 'branch -a' comm
 git branch -a
 -------------
 
+The output may look like this:
+
+$ git branch -a
+* master
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/newidea
+
+SENDING BRANCHES OVER THE NETWORK: PUSHING AND PULLING
+======================================================
+
+In order to send the commits in a branch to a remote repository, we need to invoke a git-push command with a reference to the remote repository. 
+
+git push
+--------
+
+We can do it like this:
+
+git push https://rosrez@github.com/rosrez/gittest.git newidea
+
+Git maintains a list of remote repositories, which we can view with this command
+
+git remote -v
+-------------
+
+$ git remote -v
+origin  https://rosrez@github.com/rosrez/gittest.git (fetch)
+origin  https://rosrez@github.com/rosrez/gittest.git (push)
+
+This list is essentially a list of bookmarks. On the left side in this example, we see the remote named 'origin', it's corresponding address is https://.... So whenever we reference origin in our network-related commands (push/pull, etc.) we just substitute the long address with the 'origin' bookmark. Origin is the default bookmark, but it's by no means special. We can add multiple repositories or even multiple bookmarks that refer to the same repo.
+
+++++++++++++++++++++++++++++++++++++++++++++
+
+EXAMPLE: BRANCH CREATION + SYNCHRONIZING WITH A REMOTE REPO
+===========================================================
+
+1. Create branch
+
+$ git branch smallfeature                         <----- CREATE THE 'smallfeature' BATCH (just creates a placeholder)
+
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+
+$ git branch                                      <----- LIST BRANCHES: OUR BRANCH IS LISTED, BUT IS NOT CURRENT
+* master
+  smallfeature
+
+$ git checkout smallfeature                       <------ ONLY NOW DO WE SWITCH TO THE NEW BRANCH
+Switched to branch 'smallfeature'
+  
+$ git status                                      <------ THE STATUS COMMAND NOW OUTPUTS OUR NEW BRANCH AS CURRENT
+On branch smallfeature
+nothing to commit, working directory clean
+
+$ git branch                                      <------ THE LIST OF BRANCHES NOW MARKS OUR NEW BRANCH AS CURRENT
+  master
+* smallfeature
+
+2. An alternative workflow.
+
+git checkout -b smallfeature                      <------ COMBINES git branch AND git checkout.
+
+
+++++++++++++++++++++++++++++++++++++++++++++
+
 Whenever you do a pull, if there is a new branch at a remote that isn't KNOWN locally yet, the
 output will inform you that you now have new branch:
 
@@ -31,10 +100,10 @@ remote: Total 16 (delta 3), reused 15 (delta 2), pack-reused 0
 Unpacking objects: 100% (16/16), done.
 From https://github.com/rosrez/gittest
    abb90e9..fd3f9cf  master     -> origin/master
- * [new branch]      newidea    -> origin/newidea    <---- INFO ABOUT A NEW BRANCH
+ *       newidea    -> origin/newidea    <---- INFO ABOUT A NEW BRANCH
 Updating abb90e9..fd3f9cf
 
-NOTE: The above output indicates that THERE IS A BRANCH in the remote repo, but it doesn't download it (=doesn't check it out). To prove this, we can issue the 'git branch [-a]' command:
+NOTE: The above output indicates that THERE IS A BRANCH in the remote repo, but it doesn't download it (=doesn't check it out). To prove this, we can issue the 'git branch ' command:
 
 $ git branch
 * master
