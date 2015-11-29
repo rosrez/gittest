@@ -55,6 +55,17 @@ origin  https://rosrez@github.com/rosrez/gittest.git (push)
 
 This list is essentially a list of bookmarks. On the left side in this example, we see the remote named 'origin', it's corresponding address is https://.... So whenever we reference origin in our network-related commands (push/pull, etc.) we just substitute the long address with the 'origin' bookmark. Origin is the default bookmark, but it's by no means special. We can add multiple repositories or even multiple bookmarks that refer to the same repo.
 
+'origin' is the default remote that gets created when you clone a repository.
+
+git push remote branch
+----------------------
+
+This updates branch 'branch' on a remote respository 'remote' with our local branch. It is necessary to perform this command on a newly created branch to send the branch to a remote repo. Unless git push remote branch is executed, the remote repo has no knowledge of the local branch.
+
+Another way to look at git-push is to understand it as push where? what?
+
+
+
 ++++++++++++++++++++++++++++++++++++++++++++
 
 EXAMPLE: BRANCH CREATION + SYNCHRONIZING WITH A REMOTE REPO
@@ -62,7 +73,7 @@ EXAMPLE: BRANCH CREATION + SYNCHRONIZING WITH A REMOTE REPO
 
 1. Create branch
 
-$ git branch smallfeature                         <----- CREATE THE 'smallfeature' BATCH (just creates a placeholder)
+$ git branch mediumfeature                         <----- CREATE THE 'mediumfeature' BATCH (just creates a placeholder)
 
 On branch master
 Your branch is up-to-date with 'origin/master'.
@@ -70,25 +81,97 @@ nothing to commit, working directory clean
 
 $ git branch                                      <----- LIST BRANCHES: OUR BRANCH IS LISTED, BUT IS NOT CURRENT
 * master
-  smallfeature
+  mediumfeature
 
-$ git checkout smallfeature                       <------ ONLY NOW DO WE SWITCH TO THE NEW BRANCH
-Switched to branch 'smallfeature'
+$ git checkout mediumfeature                       <------ ONLY NOW DO WE SWITCH TO THE NEW BRANCH
+Switched to branch 'mediumfeature'
   
 $ git status                                      <------ THE STATUS COMMAND NOW OUTPUTS OUR NEW BRANCH AS CURRENT
-On branch smallfeature
+On branch mediumfeature
 nothing to commit, working directory clean
 
 $ git branch                                      <------ THE LIST OF BRANCHES NOW MARKS OUR NEW BRANCH AS CURRENT
   master
-* smallfeature
+* mediumfeature
 
-2. An alternative workflow.
+1a. An alternative workflow.
 
-git checkout -b smallfeature                      <------ COMBINES git branch AND git checkout.
+git checkout -b mediumfeature                      <------ COMBINES git branch AND git checkout.
+
+2. Issue the push command to propagate the batch to a remote repo:
+
+$ git push origin mediumfeature
+
+3. Check that the remote now contains the branch:
+
+git branch -a
+  master
+* mediumfeature
+  newidea
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/mediumfeature
+  remotes/origin/newidea
+
+4. Issue git-pull in a different repo (on the same machine or on a different one):
+
+git pull
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 1), reused 1 (delta 1), pack-reused 2
+Unpacking objects: 100% (3/3), done.
+From https://github.com/rosrez/gittest
+ * [new branch]      mediumfeature -> origin/mediumfeature    <------ NOTIFIES ABOUT A NEW REMOTE BRANCH
+Already up-to-date.
+
+This says that a new branch appeared on a remote, but it doesn't actually download it or make it available for switching to. We can use git-status to verify:
+
+git branch
+* master
+  newidea
+  origin
+
+This doesn't show the new 'mediumfeature' branch, so our local repo is still not associated with that branch.
+
+NOTE. Remote repositories are immutable, we can't commit to it.
+
+5. If we need to start modifying the remote repo, we have to check it out.
+
+git checkout origin mediumfeature
+---------------------------------
+
+OR, we can issue a shorthand version of the command:
+
+git checkout mediumfeature
+--------------------------
+
+The latter form assumes that there is NO LOCAL BRANCH CALLED 'mediumfeature'. 
+
+After checking out the remote branch, we create a local shadow copy of it and automatically switch to it.
+
+
+
 
 
 ++++++++++++++++++++++++++++++++++++++++++++
+
+EXAMPLE: RENAMING AN EXISTING BRANCH
+
+1. Suppose I created a branch with the name mediumfeature.txt by mistake:
+
+2. I'd like to rename the branch. Here is how I do it (-m stands for 'move'):
+
+$ git branch -m mediumfeature.txt mediumfeature
+
+3. Check that the move worked as expected
+
+$ git branch
+  master
+* mediumfeature
+  newidea
+
+
+++++++++++++++++++++++++++++++++++++++++++++
+
 
 Whenever you do a pull, if there is a new branch at a remote that isn't KNOWN locally yet, the
 output will inform you that you now have new branch:
