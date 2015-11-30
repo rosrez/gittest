@@ -8,4 +8,18 @@ Will merge the current branch with ANY REMOTE BRANCH.
 
 EXAMPLE: RESOLVING A MERGE CONFLICT.
 
-Suppose we made conflicting changes to a file in a branch called mediumfeature2 and in the mainline (master). We pushed mediumfeature2 to a shared remote repo and are now trying to merge the changes.
+Suppose we made conflicting changes to a file in a branch called mediumfeature2 and in the mainline (master). We pushed mediumfeature2 to a shared remote repo and are now trying to merge mediumfeature2 into master.
+
+1. We perform git-fetch:
+
+$ git merge origin/mediumfeature2
+error: Your local changes to the following files would be overwritten by merge:
+	conflict.txt
+Please, commit your changes or stash them before you can merge.
+Aborting
+
+Git noticed the conflict, but our local changes are not saved anywhere (we haven't committed to master yet).
+
+2. We do a git-commit:
+
+
