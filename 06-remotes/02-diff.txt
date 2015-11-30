@@ -1,0 +1,30 @@
+git diff
+--------
+
+The command can be used to compare:
+
+1) two branches;
+2) any two commits;
+3) remote branches/commits and local branches commits
+
+EXAMPLES
+
+1) If we use the form
+
+git diff branch1 branch2, OR the equivalent
+git diff branch1..branch2
+
+then we compare heads of those branches. We can refer to arbitrary commits within those branches using the usual natigational shortcuts, ~ and ^:
+
+git diff branch1^^^..branch2^
+
+2) We can also refer to individual commits, tags, branches by their hashes.
+
+3) If we commit local and remote branches we use the syntax:
+
+git diff branch remote/branch; if remote is the default origin then it will look like this:
+git diff branch origin/branch
+
+One useful option to git-diff is --word-diff which displays not just different lines but individual words. Useful to track down changes like constants, strings, etc.
+
+
