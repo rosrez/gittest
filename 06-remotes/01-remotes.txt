@@ -55,8 +55,15 @@ git push
 
 REPO 2:
 
+Perform this command:
 
+git fetch -- this will fetch the remote branches %%???
 
+And then
+
+git diff mediumfeature origin/mediumfeature
+
+This will display differences between your local version of 'mediumfeature' and the remote version.
 
 7. You can serve your repository over the git protocol like this:
 
