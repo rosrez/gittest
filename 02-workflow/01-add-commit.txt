@@ -1,17 +1,46 @@
-git init testrepo
+CREATING A GIT REPOSITORY
+=========================
+
+git init gittest
+-----------------
 
 This creates the repository, i.e. the directory and a .git subdirectory in it.
 
 git status 
 ----------
+Displays the branch and the difference between the upstream (push) target and the local branch.
 
-Git tracks contennt, not the filenames. For example, touch on a file doesn't change it status.
+BASIC WORKFLOW
+==============
+
+Git tracks content, not the filenames. For example, touch on a file doesn't change it status.
 
 This displays status:
 untracked - file has never been added.
 new       - file that has just been added.
 modified  - file already tracked,but modidied.
 Reports the status of the repo no matter where in the directory structure you are.
+
+Stages
+=====
+
+The workflow can be illustrated with the following diagram.
+
+1. EDIT
+2. ADD
+3. COMMIT
+
+                    CHECKOUT
+     +-----------------------------------+
+     |                                   |
+     V                                   |
++----------+      +---------+         +------+
+|          | ADD  |         | COMMIT  |      |
+| WORKING  | ---> | STAGING | ------> | REPO |
+|          |      |         |         |      |
++----------+      +---------+         +------+
+
+
 
 git add index.html
 ------------------
@@ -46,24 +75,14 @@ Adds all untracked files from the current directory to a repo recursively (i.e. 
 
 
 
-Stages
-=====
-
-1. EDIT
-2. ADD
-3. COMMIT
-
-                    CHECKOUT
-     +-----------------------------------+
-     |                                   |
-     V                                   |
-+----------+      +---------+         +------+
-|          | ADD  |         | COMMIT  |      |
-| WORKING  | ---> | STAGING | ------> | REPO |
-|          |      |         |         |      |
-+----------+      +---------+         +------+
-
-
-
 git add .
+
+ADD AND COMMIT IN ONE COMMAND
+-----------------------------
+
+git commit -a -m'Comment'
+------------------------
+This command adds and commits changes to all TRACKED files, i.e. the ones that have previously been added/committed. This notation DOESN'T WORK FOR NEW FILES.
+
+
 
