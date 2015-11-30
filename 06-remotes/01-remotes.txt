@@ -1,10 +1,14 @@
+Remotes are just convenience bookmarks that point to full addresses of remotes. We could use full URLs anywhere we use a remote name, even with git push/pull.
+
+origin is just the default remote that is created when you git-clone a remote repo.
+
 1. It's possible to have as many remote repositories as you wish.
 2. If you've cloned, the DEFAULT NAME is origin. The 'origin' repo doesn't any special properties.
 
 3. To see the remotes, issue the following command:
 
 $ git remote -v
-origin  https://rosrez@github.com/rosrez/gittest.git (fetch)
+origin  https://rosrez@github.com/rosrez/gittest.git (fetch) <--- pull = fetch + merge
 origin  https://rosrez@github.com/rosrez/gittest.git (push)
 
 4. Use this to add a remote:
@@ -31,6 +35,33 @@ We would have to open TCP port 9418 on mybox to actually make the repo visible t
 
 6. git fetch 
 
+git fetch remotename 
+--------------------
+
+Downloads branches from 'remotename'. The relationship between git-pull and git-fetch is the following:
+
 git pull = git fetch + git merge
 
+EXAMPLE.
 
+REPO 1:
+git checkout mediumfeature
+
+echo NEW LINE TO TEST git-fetch >> mediumfeature.txt
+
+git -a -m'Testing git-fetch: new commit'
+
+git push
+
+REPO 2:
+
+
+
+
+7. You can serve your repository over the git protocol like this:
+
+git serve
+---------
+
+
+You have to open the port 9418 to make the repo visible from outside.
