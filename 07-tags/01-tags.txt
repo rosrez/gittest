@@ -1,0 +1,61 @@
+Tags are basically hashes, just like commits and branches. These are just named markers, usually used to provide info to repo users of 'important' commits, like working snapshots of code, releases, etc.
+
+We can mark last good builds as tags and releases as heavyweight tags.
+
+LIGHT vs HEAVYWEIGHT TAGS
+
+git tag <TAGNAME> 
+-----------------
+The convention is that capital letters and underscores are used for tag names.
+
+The command creates just another pointer into the DAG:
+
+$ git tag MEDIUMFEATURE_REL_01
+
+Now, a new file is created in .git/refs/tags
+
+$ ll .git/refs/tags
+rw-rw-r--. 1 admin admin 41 Nov 30 22:16 MEDIUMFEATURE_REL_01
+
+And the file contains the hash for the tag:
+
+$ cat .git/refs/tags/MEDIUMFEATURE_REL_01 
+5aa4533391731e382f3d0557f85bad1fe3021aed
+
+Now, if we do a git-push, nothing gets pushed to the remote repo:
+
+$ git push
+Everything up-to-date
+
+The reason is that the TAG IS LOCAL to the machine where it is created. TAGS ARE NOT PUSHED, tags must be pushed explicitly. The command to push tags is:
+
+git push --tags
+---------------
+
+git push --tags
+Password for 'https://rosrez@github.com': 
+Total 0 (delta 0), reused 0 (delta 0)
+To https://rosrez@github.com/rosrez/gittest.git
+ * [new tag]         MEDIUMFEATURE_REL_01 -> MEDIUMFEATURE_REL_01
+
+git tag -a <TAGNAME>
+--------------------
+Creates a heavyweight tag, which resides in the DAG as a separate blob, not just a pointer to the DAG.
+
+This command opens up an editor to edit the 'commit-like' message to associate with the heavyweight tag.
+
+Again, by default the tag is not going to be pushed so we must explicitly ask git to do so with the --tags option to git-push. However, git-pull does pull tags automatically by default. This is governed by the fetch setting in .git/config, the refspec wildcards are constructed to perform pulls of tags automatically.
+
+We can checkout contents of a tag. This results in the 'detached HEAD' state, i.e. we cannot commit to the branch until we start a new branch. We can, of course, start a new branch off a tag, just like off any other commit.
+
+git checkout MEDIUMFEATURE_REL_01
+
+DELETING TAGS
+-------------
+
+git tag -d <TAGNAME>
+--------------------
+
+Deleting tags is normal if you make a typo in the tag's way and the TAG IS NOT YET PUSHED. Otherwise, git-push will complain. We can force git-push to make that change to the remote with the --force option, but it is also going to affect any subsequent pulls by other team members and is best avoided.
+
+
