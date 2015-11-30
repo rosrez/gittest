@@ -87,4 +87,12 @@ If we had some unconflicting changes in branch 'mediumfeature2', a FAILED MERGE 
 
 This is what goes on behind the scenes when you pull from a remote: it fetches branches, does a merge on the branch you are on and then commits changes that result from the merge with a default comment: merged from origin/branchname.
 
+EXAMPLE: RACE CONDITIONS
 
+There is no server-side conflict resolution, so whoever is trying to push and sees the conflict message should pull first and align the local branch to the remote version. Then it's safe to push.
+
+git pull origin +master:master
+------------------------------
+Overwrite any local changes with the contents of the remote branch (origin/master).
+
+A subsequent push will succeed.
