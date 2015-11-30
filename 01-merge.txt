@@ -1,0 +1,11 @@
+git merge
+---------
+Merges the current branch with its associated remote branch.
+
+git merge remote/branch
+-----------------------
+Will merge the current branch with ANY REMOTE BRANCH.
+
+EXAMPLE: RESOLVING A MERGE CONFLICT.
+
+Suppose we made conflicting changes to a file in a branch called mediumfeature2 and in the mainline (master). We pushed mediumfeature2 to a shared remote repo and are now trying to merge the changes.

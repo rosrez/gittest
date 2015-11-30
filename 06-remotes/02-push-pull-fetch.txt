@@ -1,0 +1,11 @@
+git push
+--------
+Without arguments, this command UPDATES ALL REMOTE BRANCHES with content of LOCAL BRANCHES.
+
+git push remote branch
+----------------------
+This will update only the branch 'branch' on remote 'remote'.
+
+git pull
+--------
+Without arguments, git-pull fetches all branches but MERGES ONLY THE ONE THAT YOU'RE CURRENTLY IN. So when you do a git-pull, you might fetch another 8 branches, but it's only the branch that you are sitting in that gets the additional git-merge command.

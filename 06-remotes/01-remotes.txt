@@ -57,7 +57,9 @@ REPO 2:
 
 Perform this command:
 
-git fetch -- this will fetch the remote branches %%???
+git fetch
+---------
+This will fetch ALL REMOTE BRANCHES but NOT MERGE THEM into any local branch.
 
 And then
 
