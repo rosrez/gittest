@@ -1,0 +1,77 @@
+@@
+1. git-branch
+
+The following is the most basic process of branch creation:
+
+1) Check which branch we're on:
+
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+
+2) Create a branch off the current branch (which is currently 'master')
+
+[admin@localhost gittest]$ git branch feature1
+
+This creates a new branch but *does not* switch to it. So we're still on master,
+as is shown by git-status command:
+
+[admin@localhost gittest]$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+
+3) To list branches, use git-branch without arguments. This displays a list of local
+branches only:
+
+[admin@localhost gittest]$ git branch
+  feature1
+* master
+  mediumfeature
+  newidea
+  origin
+
+We can see that our feature1 branch has appeared on the list of branches.
+
+Creating a branch, however, does not automatically propagate it to remote repositories.
+We can ussue the 'git branch -a' check this. See more on local vs. remote branches in a separate
+document in this chapter.
+
+4) Branches are just references to individual commits. We can see that our newly created branch,
+as well as the 'master' branch we've just branched from, point to the the same commit:
+
+$ git log --oneline --decorate
+
+a5f07c2 (HEAD -> master, origin/master, origin/HEAD, feature1) Merge race condition
+de9d409 Merge document housekeeping: changed location
+53e3af9 Merged a conflicting change from mediumfeature
+....
+
+It is only after additional work gets done in either 'master' or 'feature1' when the branches start
+to diverge and point to different last commits. However, since each commit has at least one parent, both
+branches can be traced back to their common ancestor commit.
+
+Note the HEAD pointer in the above output. The HEAD is just a pointer to a commit for the current branch. 
+So, in this case HEAD is pointing to 'master', which in turn points to master's last commit. Our newly created
+'feature1' branch is pointing to the same commit:
+
+                                                 HEAD
+                                                   |
+                                                   V
+                                                master
+                                                   |
+                                                   V
+ .... <------- 53e3af9 <------ de9d409 <------- a5f07c2
+                                                   ^
+                                                   |
+                                                feature1
+
+5) To create a branch and switch to it at the same time, use this:
+
+$ git checkout -b <branchname>
+
+This is equivalent to:
+
+$ git branch <branchname>
+$ git checkout <branchname>

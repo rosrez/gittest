@@ -1,0 +1,50 @@
+@@
+1. REMOTE BRANCHES
+
+Use git ls-remote [remote] or git remote show [remote] to display remote branches:
+
+$ git remote show origin
+* remote origin
+  Fetch URL: https://rosrez@github.com/rosrez/gittest.git
+  Push  URL: https://rosrez@github.com/rosrez/gittest.git
+  HEAD branch: master
+  Remote branches:
+    master         tracked
+    mediumfeature  tracked
+    mediumfeature2 tracked
+    newidea        tracked
+  Local branches configured for 'git pull':
+    master        merges with remote master
+    mediumfeature merges with remote mediumfeature
+  Local refs configured for 'git push':
+    master        pushes to master        (local out of date)
+    mediumfeature pushes to mediumfeature (local out of date)
+    newidea       pushes to newidea       (up to date)
+
+$ git ls-remote origin
+f953da959c0f52f08f3ac4987fef5a6e40891dc9        HEAD
+f953da959c0f52f08f3ac4987fef5a6e40891dc9        refs/heads/master
+5aa4533391731e382f3d0557f85bad1fe3021aed        refs/heads/mediumfeature
+fcfa2fdeaf7c527e75f090282ac127043360b4fe        refs/heads/mediumfeature2
+13476def06b9b61192ff00047f685dae4cf795a5        refs/heads/newidea
+5aa4533391731e382f3d0557f85bad1fe3021aed        refs/tags/MEDIUMFEATURE_REL_01
+
+@@
+2. REMOTE-TRACKING BRANCHES
+
+Remote-tracking branches are references to the state of remote branches. They are local
+references that you can't move; Git moves them automatically for you whenever you do
+any network communication.
+
+Remote-tracking branches take the form (remote)/(branch). Most commonly, git-fetch is 
+performed to synchronize work with the remote repository:
+
+$ git fetch origin
+
+This updates the pointer to your origin/master local reference.
+
+If we had added another remote, say team1, we could issue a similar git-fetch command:
+
+$ git fetch team1
+
+This command would create a team1/master local reference.

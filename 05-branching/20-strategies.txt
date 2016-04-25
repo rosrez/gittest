@@ -1,0 +1,27 @@
+@@
+1. MASTER-DEVELOPMENT-TOPIC MODEL
+
+In this branching model, 'master' is usually used to store the most stable (production) version of the project.
+Next down in the hierarchy is the 'development' or 'next' branch where all current development happens. Individual
+topics (or features, functionalities, etc.) are forked off development as topic branches. When the topic code is
+ready, it's merged into the 'development' branch. When development has included all the features and is deemed 
+stable, it is included in the mainline (and probably tagged as the next release, too).
+
+This is the illustration of the master-development-topic branches concept:
+
+
+C1 ==============================================================> MASTER
+ \
+  \
+   +---- C2 --- C3 --- C4 --- C5 ================================> DEVELOP
+                                \
+                                 \
+                                  + C6 --- C7 ===================> TOPIC
+
+
+The same branches/commits in linear form (with Git commit pointers for each branch):
+
+C1 ----- C2 --- C3 --- C4 --- C5 -- C6 --- C7
+^                             ^            ^
+|                             |            |
+MASTER                      DEVELOP      TOPIC

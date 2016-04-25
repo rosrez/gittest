@@ -1,0 +1,24 @@
+@@
+1. DELETING BRANCHES WITH git-branch
+
+Run this command to delete a branch:
+
+git branch -d <branchname>, as in:
+
+$ git branch -d feature1
+Deleted branch feature1 (was 0a8efd9).
+
+This may be used to prune branches we've already merged into the mainline.
+
+2. DELETING UNMERGED BRANCHES
+
+By default, deleting unmerged branches failes:
+
+$ git branch -d feature1
+Deleted branch feature1 (was 0a8efd9).
+
+$ git branch -d newidea
+error: The branch 'newidea' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D newidea'.
+
+As the output suggests, it is possible to delete an unmerged branch with 'git branch -D'.

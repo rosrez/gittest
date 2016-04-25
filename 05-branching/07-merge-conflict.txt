@@ -1,0 +1,83 @@
+@@
+1. MERGE CONFLICTS
+
+If we try to merge two conflicting branches (named master and feature-fix1, in the subsequent discussion), 
+we'll see the following message:
+
+$ git merge feature-fix1
+Auto-merging test/feature1.txt
+CONFLICT (content): Merge conflict in test/feature1.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+So Git hasn't automatically created a new merge commit. Git expects the user to resolve the conflict first.
+
+@@
+2. CHECKING WHICH FILES ARE UNMERGED AS A RESULT OF A CONFLICT
+
+Tho see which files remain unmerged after an unsuccessful git-merge, use git-status:
+
+$ git status
+On branch master
+Your branch is ahead of 'origin/master' by 5 commits.
+  (use "git push" to publish your local commits)
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+        both modified:   test/feature1.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+@@
+3. RESOLVING CONFLICTS
+
+The preceding git-status output indicates that we have a conflict in the test/feature1.txt file. 
+The way to resolve conflicts is to edit the conflicting file so it looks as desired.
+
+When we try to open the file, we see that Git has added conflict-resolution markers to the file:
+
+<<<<<< HEAD
+feature1=01
+feature1.extra1 = extra stuff #1
+=======
+feature1=1
+feature1.extra1 = extra stuff #1.1
+>>>>>>> feature-fix1
+
+We see the conflicting files in a diff-like format along with indications of which branch the lines come from.
+HEAD indicates the branch we're trying to merge into, which is master. So we edit the file to achieve its
+desired final state, like this:
+
+feature1=01
+feature1.extra1 = extra stuff #1.1
+
+NOTE: The conflict markers are no longer necessary, so we *must* remove them!
+
+Next, we just perform git-add on this file, which marks this conflict as resolved in Git:
+
+$ git add test/feature1.txt
+$ git status
+
+$ git status
+On branch master
+Your branch is ahead of 'origin/master' by 5 commits.
+  (use "git push" to publish your local commits)
+All conflicts fixed but you are still merging.
+  (use "git commit" to conclude merge)
+
+Changes to be committed:
+
+        modified:   test/feature1.txt
+
+git-status reports no more conflicts.
+
+@@
+4. COMMITTING AFTER RESOLVING CONFLICTS
+
+All we need to do after resolving all conflicts is to run git-commit to produce a final commit for the merge:
+
+$ git commit -m 'Resolved feature-fix1 conflict'
+[master 6715c84] Resolved feature-fix1 conflict
+

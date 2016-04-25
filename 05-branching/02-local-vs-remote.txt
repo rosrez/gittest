@@ -1,0 +1,38 @@
+@@
+1. SINCE ALL REPOSITORIES ARE EQUAL, CREATING A NEW BRANCH DOESN'T PROPAGATE IT TO ANY REMOTE REPOSITORY.
+
+Suppose we have a newly created branched named 'feature1'. It will be visible locally, but won't be
+included in any remote repositories.
+
+1) To list branches, use git-branch without arguments. This displays a list of local
+branches only:
+
+[admin@localhost gittest]$ git branch
+  feature1
+* master
+  mediumfeature
+  newidea
+  origin
+
+We can see that our feature1 branch has appeared on the list of branches.
+
+Creating a branch, however, does not automatically propagate it to remote repositories.
+We can ussue the following command to check this.
+
+2) Show all branches (including remote ones):
+
+[admin@localhost gittest]$ git branch -a
+  feature1
+* master
+  mediumfeature
+  newidea
+  origin
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/mediumfeature
+  remotes/origin/mediumfeature2
+  remotes/origin/newidea
+
+As we can see, 'feature1' does not appear on the remote branch list yet. We need an explicit git-push
+to push it to a remote repository of our choice.
+

@@ -1,0 +1,67 @@
+@@
+1. USE git-checkout TO SWITCH TO A DIFFERENT BRANCH
+
+$ git checkout feature1
+Switched to branch 'feature1'
+
+This command moves the HEAD pointer to point to 'feature1'. Now, the branch pointers look like this:
+
+                                               ( HEAD used to be here)
+                                                
+                                                
+                                                master
+                                                   |
+                                                   V
+ .... <------- 53e3af9 <------ de9d409 <------- a5f07c2
+                                                   ^
+                                                   |
+                                                feature1
+                                                   ^
+                                                   |
+                                                  HEAD - now points at 'feature1'
+
+@@
+2. COMMITTING TO BRANCHES
+
+Committing to a newly (or previously) created branch is as easy as committing to master.
+
+$ vim test/feature1.txt
+$ git add test/feature1.txt 
+$ git commit -m 'feature1 change'
+
+See commit history:
+
+$ git log --oneline --decorate
+0a8efd9 (HEAD -> feature1) feature1 change
+a5f07c2 (origin/master, origin/HEAD, master) Merge race condition
+de9d409 Merge document housekeeping: changed location
+53e3af9 Merged a conflicting change from mediumfeature
+
+We can now see that feature1 (and HEAD which currently points to it) have advanced by one commit: 0a8efd9.
+
+The commit graph will look like this:
+
+                                                master
+                                                   |
+                                                   V
+ .... <------- 53e3af9 <------ de9d409 <------- a5f07c2 <--------- 0a8efd9 
+                                                                      ^
+                                                                      |
+                                                                   feature1 - advanced by 1 commit
+                                                                      ^
+                                                                      |
+                                                                     HEAD - advanced with feature1 (the current branch)
+
+We also see that 'master' didn't advance so it doesn't include this change. We can switch 
+back to 'master' to verify this.
+
+$ git checkout master
+Switched to branch 'master'
+Your branch is up-to-date with 'origin/master'.
+
+This command did two things. It moved the HEAD pointer back to point to the 'master' branch. It also
+reverted the files in our working directory back to the snapshot that 'master' points to. This means we no longer have
+the file we created in 'feature1' in our working directory.
+
+$ ll /test/feature1.txt
+ls: cannot access /test/feature1.txt: No such file or directory

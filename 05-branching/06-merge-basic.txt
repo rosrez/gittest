@@ -1,0 +1,49 @@
+@@
+1. BASIC MERGING WITHOUT FAST FORWARDING
+
+Here, we discuss the scenario where two diverged branches need to be merged
+
+1) Create a branch (off master, which is current) and switch to it:
+
+$ git checkout -b feature2
+Switched to a new branch 'feature2'
+
+2) Do some work:
+
+$ vi test/feature2.txt
+
+3) Commit work:
+
+$ git commit -m 'feature2 development'
+[feature2 992d0c8] feature2 development
+ 1 file changed, 2 insertions(+)
+ create mode 100644 test/feature2.txt
+
+4) Switch back to master:
+
+$ git checkout master
+
+5) Do some work:
+
+$ vi test/feature1.txt
+
+6) Commit work:
+
+$ git commit -a -m 'Change in mainline: diverges from feature2'
+[master 08e83ce] Change in mainline: diverges from feature2
+ 1 file changed, 1 insertion(+)
+
+7) Now we have two branches that have diverged from each other.
+
+$ git merge feature2
+Merge made by the 'recursive' strategy.
+ test/feature2.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 test/feature2.txt
+
+*Recursive strategy* here denotes that does a three-way merge. That is, it first
+finds the common ancestor of the branches being merged and applies changes in both
+branches while making sure they don't conflict.
+
+Git then creates another commit, which incorporates all the changes. The commit has two
+parents, which is reflected in the git log --graph output.

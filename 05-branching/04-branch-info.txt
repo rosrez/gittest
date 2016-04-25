@@ -1,0 +1,92 @@
+@@
+1. SHOWING BRANCH INFO
+
+1) Basic info about local branches
+
+$ git branch
+  feature1
+* master
+  mediumfeature
+  newidea
+  origin
+
+2) Info about all branches, including remote branches.
+
+$ git branch -a
+  feature1
+* master
+  mediumfeature
+  newidea
+  origin
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/mediumfeature
+  remotes/origin/mediumfeature2
+  remotes/origin/newidea
+
+3) Seeing last commits on each branch:
+
+$ git branch -v
+  feature-fix1  9e5cee8 fixed extra stuff
+  feature1      0a8efd9 feature1 change
+  feature2      992d0c8 feature2 development
+* master        6715c84 [ahead 7] Resolved feature-fix1 conflict
+  mediumfeature 3b0699e [behind 2] Commit to branch created elsewhere
+  newidea       13476de User 1 - 3rd idea
+  origin        13476de User 1 - 3rd idea
+
+4) Show branches that have been merged into the one we're currently on:
+
+$ git branch --merged
+  feature-fix1
+  feature1
+  feature2
+* master
+
+5) Show branches that have not been merged yet into the one we're on:
+
+$ git branch --no-merged
+  mediumfeature
+  newidea
+  origin
+
+
+@@
+2. SHOWING INDIVIDUAL COMMITS WITH BRANCH INFO
+
+IMPORTANT!
+The basic git-log commant shows just the *current* branch's log history (including all work 
+preceding this branch). That is, git-log just traverses the parent subtree. To display commits from
+all branches, add --all switch.
+
+1) Adding branch-related info about logs
+
+git log --oneline --decorate
+
+$ git log --oneline --decorate
+0a8efd9 (HEAD -> feature1) feature1 change
+a5f07c2 (origin/master, origin/HEAD, master) Merge race condition
+de9d409 Merge document housekeeping: changed location
+53e3af9 Merged a conflicting change from mediumfeature
+
+The --decorate switch adds extra branch-related info to the output that normally just contains commits.
+Here, we can see that the last commit pertains to the 'feature1' branch, which is the current branch
+pointed to by HEAD (HEAD -> feature1).
+
+2) Adding more graph info about logs
+
+$ git log --oneline --decorate --graph --all
+* 0a8efd9 (feature1) feature1 change
+* a5f07c2 (HEAD -> master, origin/master, origin/HEAD) Merge race condition
+* de9d409 Merge document housekeeping: changed location
+*   53e3af9 Merged a conflicting change from mediumfeature
+|\  
+| * fcfa2fd (origin/mediumfeature2) Sumulate a merge conflict
+* | f3106da Fixed temporary file: removed
+* | 994388f Added merge document
+* |   0242089 Merge remote-tracking branch 'origin/mediumfeature2'
+|\ \  
+| |/  
+| * 397b680 A file to illustrate a merge conflict
+| * b120c2e Initial commit to mediumfeature2
+.....

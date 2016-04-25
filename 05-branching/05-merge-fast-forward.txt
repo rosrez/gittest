@@ -1,0 +1,29 @@
+@@
+1. git-merge
+
+The most trivial example of a merge is when two branches share a common ancestor and one of the branches stays at that
+same point while the other branch includes some changes. That is, one branch is directly ahead of the other.
+In our example, we branched off master to create feature1 branch, did some work there and are now ready to merge
+the changes back into master. Since feature1 is directly ahead of master, it's enough to collect all the differences
+in commit since the common ancestor and apply those differences to master. This is called 'fast forward'.
+
+$ git merge feature1
+Updating a5f07c2..0a8efd9
+Fast-forward
+ test/feature1.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test/feature1.txt
+
+Now, the latest commit from feature1 branch is visible in the master branch. (feature1 and master differed 
+by only this single commit):
+
+$git log --oneline
+0a8efd9 feature1 change
+a5f07c2 Merge race condition
+de9d409 Merge document housekeeping: changed location
+
+$  git status
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+
+On a side note, our master branch becomes ahead of the corresponding remote branch by 1 commit.
