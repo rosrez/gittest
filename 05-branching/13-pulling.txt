@@ -1,0 +1,10 @@
+@@
+1. PULL = FETCH + MERGE
+
+git-fetch fetches down all the changes on a server. However, it *does not* modify your working directory at all.
+Instead, Git gets the data and lets you merge it yourself.
+
+git-pull is just a git-fetch followed by a git-merge in most cases. git-pull discovers the previous association
+of a tracking branch with the remote-tracking branch; so it performs a regular git-fetch followed by a git-merge.
+
+It is advised to use git-fetch and git-merge instead of git-pull.

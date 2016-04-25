@@ -1,0 +1,49 @@
+@@
+1. WHAT DOES FETCH DO?
+
+Suppose we pushed a new branch (public-branch1) to a remote. Our collaborators do not automatically get notified,
+since their remote references point to the same commits as at the time the last network communication with the
+server occurred (i.e. fetch, clone, etc. was performed). We can see this in a different environment once cloned
+from the same remote:
+
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+nothing to commit, working directory clean
+
+This means our origin/master *does not* reflect the latest state of the remote's master branche (we know another
+person has committed to it). Collaborators will never know until they perform git-fetch from the remote.
+
+If one of our collaborators fetches from the server, they will get a reference to where 
+the server's version of "public-branch1" is under the remote branch origin/public-branch1:
+
+$ git fetch origin
+remote: Counting objects: 49, done.
+remote: Total 49 (delta 10), reused 10 (delta 10), pack-reused 39
+Unpacking objects: 100% (49/49), done.
+From https://github.com/rosrez/gittest
+   de9d409..f953da9  master     -> origin/master
+ * [new branch]      public-branch1 -> origin/public-branch1 <--- Git SPOTTED A NEW BRANCH ON THE REMOTE
+
+Git has now created a remote-tracking branch with the name origin/public-branch1. The remote-tracking branch is 
+just a pointer that corresponds to the state of the remote branch at the time of fetch.
+
+IMPORTANT!
+Git has also downloaded any commits the remote has that our local repository does not have.
+
+IMPORTANT!
+When you do a fetch that brings down new remote-tracking branches, you don't automatically have local, editable
+copies of them. Thus, after git-fetch, we don't have the public-branch1 branch, we only have an origin/public-branch1
+pointer that we can't modify. git-branch illustrates this state:
+
+$ git branch -a
+* master
+  mediumfeature
+  mediumfeature2
+  newidea
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+  remotes/origin/mediumfeature
+  remotes/origin/mediumfeature2
+  remotes/origin/newidea
+  remotes/origin/public-branch1    <--- NOW WE HAVE A POINTER TO origin/public-branch1, BUT NO public-branch1 LOCALLY!

@@ -1,0 +1,45 @@
+@@
+1. PUSHING A BRANCH TO A REMOTE
+
+Suppose we have a local branch 'public-branch1' and we'd like to make it public and upload to a remote.
+
+$ git branch
+  feature-fix1
+  feature2
+  master
+  mediumfeature
+  newidea
+  origin
+* public-branch1
+
+We use git-push to do so:
+
+[admin@localhost gittest]$ git push origin public-branch1
+Password for 'https://rosrez@github.com': 
+Counting objects: 95, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (78/78), done.
+Writing objects: 100% (95/95), 25.11 KiB | 0 bytes/s, done.
+Total 95 (delta 29), reused 0 (delta 0)
+To https://rosrez@github.com/rosrez/gittest.git
+ * [new branch]      public-branch1 -> public-branch1   <---- INDICATES A NEW BRANCH UPLOADED TO REMOTE
+
+@@
+2. OTHER FORMS OF PUSHING
+
+The preceding example is a shortcut. Git expands the public-branch1 name out to
+refs/heads/public-branch1:refs/heads/public-branch1, which means, "Take my public-branch1" local branch
+and push it to update the remote's "public-branch1" branch.
+
+You can also do:
+
+git push origin public-branch1:public-branch1,
+
+which does the same thing, i.e. it says, "Take my public-branch1" and make it the remote's "public-branch1".
+We can use this format to push a local branch into a remote branch that is named differently, like so:
+
+git push origin public-branch1:newbranch
+                     ^            ^
+                     |            |
+               LOCAL NAME   REMOTE NAME
+

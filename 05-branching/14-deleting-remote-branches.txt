@@ -1,0 +1,6 @@
+@@
+1. DELETING REMOTE BRANCHES
+
+$ git push origin --delete public-branch1
+
+
