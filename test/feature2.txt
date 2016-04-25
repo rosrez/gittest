@@ -1,0 +1,2 @@
+feature2 = 2
+feature2.extra1 = extra stuff #1
