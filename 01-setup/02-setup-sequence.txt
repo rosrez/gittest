@@ -1,0 +1,31 @@
+EXAMPLE: CREATE A REPOSITORY
+----------------------------
+
+1. cd to a directory (populated or not).
+
+2. (OPTIONAL) If not populated, make a README.md file (for github) or whatever other file.
+
+3. git add all the files you have (existing files) or the one you've just created.
+
+git add .
+
+from the top directory will do for both cases.
+
+4. Commit.
+
+5. Set up a remote. When setting a writeable remote, make sure you provide your username, that is, use:
+
+https://rosrez@github.com/rosrez/net-stevens.git instead of
+        ^^^^^^^
+
+https://github.com/rosrez/net-stevens.git
+
+The latter is automatically suggested by github, but this will only work to pull/fetch from the repository, not to push local updates to it.
+
+So, use this type of command:
+
+git remote add origin https://rosrez@github.com/rosrez/net-stevens.git
+
+6. Push to the remote repository. Use the -u option to set the upstream linkage at the same time unless it's a one-time push.
+
+git push -u origin master
