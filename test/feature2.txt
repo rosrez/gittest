@@ -1,2 +1,2 @@
-feature2 = 2
-feature2.extra1 = extra stuff #1
+feature2 = 02
+feature2.extra1 = extra stuff #2.1
