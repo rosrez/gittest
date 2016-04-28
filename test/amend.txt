@@ -1,0 +1,2 @@
+Test file for amending commits.
+AMEND1: forgot to add this line
