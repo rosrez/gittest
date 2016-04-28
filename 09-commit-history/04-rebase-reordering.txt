@@ -1,0 +1,44 @@
+@@
+1. REORDERING/DELETING COMMITS WITH INTERACTIVE REBASE
+
+Suppose we have recent commits like these:
+
+git log --pretty=oneline -4
+5db638d2b44ce6d96236ba97eba5bb5a5d95fd82 change 6
+64bb5ec926fe3e08fd751e98d1bba6190711ff73 change 5
+03dc28b440f60c006e16fdcfc3e412c9441e90a2 change 4
+66e087ef6728b9c4786eacc16ff978cd250fc358 amend & interactive rebase
+
+Assume that we want to remove 'change 5' and reorder 'change 4' and 'change 6'.
+This is how we do it.
+
+$ git rebase -i HEAD~3
+
+The following script is offered by Git:
+
+pick 03dc28b change 4
+pick 64bb5ec change 5
+pick 5db638d change 6
+
+# Rebase 66e087e..5db638d onto 66e087e (3 command(s))
+
+pick 5db638d change 6
+pick 03dc28b change 4
+
+This reverses change 6 and change 4 and also removes change 5. Then we save an exit to apply the script.
+
+Here, we run into a problem since change 6 includes changes from change 4, so we resolve this first, i.e.
+edit, git-add, git rebase --continue.
+
+$ git rebase --continue
+[detached HEAD 1614c79] change 4
+ 1 file changed, 3 insertions(+)
+Successfully rebased and updated refs/heads/master.
+
+The net result of the changes is as expected:
+
+$ git log --pretty=oneline -3
+1614c794f6075f803e5b6fa224256d0fb098f1f8 change 4
+8b54726b24d137515600abf5c3ef290d8dea527f change 6
+66e087ef6728b9c4786eacc16ff978cd250fc358 amend & interactive rebase
+

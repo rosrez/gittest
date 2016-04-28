@@ -1,0 +1,58 @@
+@@
+1. MERGING SEVERAL COMMITS INTO ONE
+
+Suppose our recent commits look like this
+
+$ git log --pretty=oneline -4
+e21cbabe37a89e4e31b9eaa9f93139527f4acf62 squash commit 3
+83a576d2c1cab31b266216bfc148fee98816a956 squash commit 2
+972ce74bf8b75d23cffa3943228e731a141f69a0 squash commit 1
+1614c794f6075f803e5b6fa224256d0fb098f1f8 change 4
+
+and we want to make the last 3 commits look like a single commit, we run
+
+$ git rebase -i HEAD~3
+
+and change this script
+
+pick 972ce74 squash commit 1
+pick 83a576d squash commit 2
+pick e21cbab squash commit 3
+
+to
+
+pick 972ce74 squash commit 1
+squash 83a576d squash commit 2
+squash e21cbab squash commit 3
+
+'squash' applies the related change and the change directly before it
+and merges the commit messages together. So, the above script makes
+a single commit from three. When we save the script and let Git proceed,
+Git puts us back to editor to accept/modify commit messages that will
+be included in the merged commit:
+
+# This is a combination of 3 commits.
+# The first commit's message is:
+squash commit 1
+
+# This is the 2nd commit message:
+
+squash commit 2
+
+# This is the 3rd commit message:
+
+squash commit 3
+
+When we save and proceed, Git finalizes the merge:
+
+[detached HEAD 3ae1c28] squash commit1
+ Date: Thu Apr 28 13:54:29 2016 +0200
+ 1 file changed, 3 insertions(+)
+Successfully rebased and updated refs/heads/master.
+
+The combined commit seems to have accepted only the first commit message:
+
+$ git log --pretty=oneline -2
+3ae1c281267b5f740db6800617243c5133759b4d squash commit 1
+1614c794f6075f803e5b6fa224256d0fb098f1f8 change 4
+
