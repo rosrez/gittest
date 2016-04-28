@@ -3,5 +3,8 @@ Interactive rebase text file.
 Change 1 --- Amended this change
 Change 2
 Change 3
+<<<<<<< HEAD
 Change 6
+=======
+>>>>>>> 03dc28b... change 4
 Change 4
