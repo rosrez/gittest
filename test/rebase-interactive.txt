@@ -1,3 +1,4 @@
 Interactive rebase text file.
 
 Change 1 --- Amended this change
+Change 2
