@@ -8,3 +8,6 @@ Change 6
 =======
 >>>>>>> 03dc28b... change 4
 Change 4
+Squash commit 1
+Squash commit 2
+Squash commit 3
