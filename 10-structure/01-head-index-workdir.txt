@@ -1,0 +1,55 @@
+@@
+1. HEAD, index and working directory.
+
+It usefull to think about HEAD, index and the working directory as three 'trees' of
+files managed by Git.
+
+@@
+2. The head
+
+HEAD is the tip of the current branches development, i.e. it points to the last
+commit in the current branch.
+
+We can inspect HEAD's contents with git-cat-file and git-ls-tree commands:
+
+To list general info, use this
+
+$ git cat-file -p HEAD
+tree 16d0ca48b047af057738613378b15216d0b7221c
+parent 3ae1c281267b5f740db6800617243c5133759b4d
+author Oleg Rosowiecki <rosrez@o2.pl> 1461846072 +0200
+committer Oleg Rosowiecki <rosrez@o2.pl> 1461846072 +0200
+
+To list individual files, use this
+
+$ git ls-tree -r HEAD
+100644 blob 256f6996591dbad0c0b59ed3443570ffc2138282    01-setup/01-global-settings.txt
+100644 blob fbb57038d52e3217635e5892fde87432d43a61ce    01-setup/02-setup-sequence.txt
+100644 blob 34f58e69b6b275dbe8807f117cffa6d505c5b855    02-workflow/01-add-commit.txt
+100644 blob 117ef485bbeaeeb0b80b70e2ec176b8d5d4a79ac    04-storage/01-git-log.txt
+.....
+
+@@
+3. The index
+
+The index is the Git's staging area or, in other words, its 'proposed next commit'.
+
+Git populates the index with a list of all the file contents that were last checked out into
+your working directory and what they looked like when they were originally checked out.
+You can replace some of those files with new versions of them (with git-add) and then
+git-commit converts that into the tree for a new commit.
+
+We can peek at index contents with git-ls-tree
+
+$ git ls-files -s
+100644 256f6996591dbad0c0b59ed3443570ffc2138282 0   01-setup/01-global-settings.txt
+100644 fbb57038d52e3217635e5892fde87432d43a61ce 0   01-setup/02-setup-sequence.txt
+100644 34f58e69b6b275dbe8807f117cffa6d505c5b855 0   02-workflow/01-add-commit.txt
+.....
+
+@@
+4. The working directory
+
+Git stores content of the other two trees in an efficient, but inconvenient manner.
+The working directory is just a sandbox where you try out our changes before committing
+them to the staging area (== index) and then to history.
