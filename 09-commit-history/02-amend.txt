@@ -1,0 +1,87 @@
+@@
+1. CHANGING THE LAST COMMIT
+
+IMPORTANT!
+Modifying commits acts a a rebase, i.e. it changes commit history along with hashes etc.
+This technique should be used only for *local* branches. Once a branch has been pushed
+to a remote, modifying commit history must not be used.
+
+Use git commit --amend to modify your last commit. See the example below.
+
+1) Make a change
+
+$ vi test/amend.txt
+
+2) Commit it
+
+$ git add test/amend.txt 
+$ git commit -m 'commit to be amended'
+[master fa98694] commit to be amended
+ 1 file changed, 2 insertions(+)
+ create mode 100644 test/amend.txt
+
+3) See the history of most recent commits
+
+$ git log -2 --pretty=oneline
+fa986945e1f03cd1484057978df05f37e493c3e8 commit to be amended   <--- NOTE THE SHA-1 HASH
+4d71f48a47fb8cd4d1eca3b4360fdee48c1fc348 moved text files to test folder
+
+4) Now, if you forgot a few changes to existing files or forgot to add/remove files,
+you need to simply add your changes to the staging area first:
+
+$ git add test/amend*.txt
+
+5) Then you have to run:
+
+git commit --amend
+
+This will open a text editor with the following text:
+
+commit to be amended                    <--- THIS IS THE LAST COMMIT MESSAGE, WE CAN EDIT IT
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Thu Apr 28 08:47:14 2016 +0200
+#
+# On branch master
+#
+# Changes to be committed:
+#       new file:   test/amend.txt
+#       new file:   test/amend2.txt
+
+We can edit the last commit message at this point to, say, 'amended last commit'. When we save the file
+and exit the editor, we see the following:
+
+[master 68b3255] amended last commit
+ Date: Thu Apr 28 08:47:14 2016 +0200
+ 2 files changed, 3 insertions(+)
+ create mode 100644 test/amend.txt
+ create mode 100644 test/amend2.txt
+
+6) Now, the commit history looks like this:
+
+$ git log --pretty=oneline -2
+68b3255000855d29784e5dd701d75ed066fa21da amended last commit  <--- THE SHA-1 HASH HAS CHANGED!
+4d71f48a47fb8cd4d1eca3b4360fdee48c1fc348 moved text files to test folder
+
+7) When we inspect the last commit, we see that it now includes both the original change and
+the additional modifications we made during the amend process.
+
+$ git diff 4d71f48
+diff --git a/test/amend.txt b/test/amend.txt
+new file mode 100644
+index 0000000..06e2084
+--- /dev/null
++++ b/test/amend.txt
+@@ -0,0 +1,2 @@
++Test file for amending commits.
++AMEND1: forgot to add this line
+diff --git a/test/amend2.txt b/test/amend2.txt
+new file mode 100644
+index 0000000..ebaef65
+--- /dev/null
++++ b/test/amend2.txt
+@@ -0,0 +1 @@
++AMEND: forgot to add this file.
+

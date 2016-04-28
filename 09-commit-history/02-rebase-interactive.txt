@@ -1,0 +1,171 @@
+@@
+1. CHANGING MULTIPLE COMMITS: git rebase -i
+
+Suppose we have multiple changes to a file introduced as a series of commits:
+
+$ git log --pretty=oneline -4
+d008585e9c32ac4e0c59c79cc72925d1cb620197 rebase-i: change3
+a7ce8e151ca83e9bc2e2ef202333cac5218f036b rebase-i: change2
+dd8bef1dffcdbccd6678d934c4bf538394345ce2 rebase-i: change1
+d20bf4e2b566c209936756f26271e57ade525105 interactive rebase test file - initial version
+
+If we need to change one or more commits of the last three,
+we can use this command
+
+$ git rebase -i HEAD~3
+
+OR
+
+$ git rebase -i HEAD~2^
+
+This command expects the *parent* of the last commit you want to edit.
+So, HEAD~2 is 3 commits back, not 2. The parent of that commit is HEAD~2^ or simply HEAD~3.
+
+When we run this command, it gives us the list of the last 3 commits that
+looks like this:
+
+pick dd8bef1 rebase-i: change1
+pick a7ce8e1 rebase-i: change2
+pick d008585 rebase-i: change3
+
+# Rebase d20bf4e..d008585 onto d20bf4e (3 command(s))
+#
+# Commands:
+# p, pick = use commit
+# r, reword = use commit, but edit the commit message
+# e, edit = use commit, but stop for amending
+# s, squash = use commit, but meld into previous commit
+# f, fixup = like "squash", but discard this commit's log message
+# x, exec = run command (the rest of the line) using shell
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+# Note that empty commits are commented out
+
+This is the rebase script Git is going to run when we save the file and exit.
+'pick' means that Git is going to use the commit without changes. Other commands
+let us modify individual commits.
+
+Note the order of the commits in the script, its the reverse of what git-log displays.
+This is because the script will apply each change chronologically, in the order it
+appears in the script.
+
+Suppose we want to modify just the earliest of the three commits. We change the script
+to look like this:
+
+edit dd8bef1 rebase-i: change1
+pick a7ce8e1 rebase-i: change2
+pick d008585 rebase-i: change3
+
+then save it and exit the editor. Git rewinds our commit history to 
+the earliest commit in the script and leaves you on the command line with the following
+message:
+
+--- snip ---
+
+$ git rebase -i HEAD~3
+Stopped at dd8bef1dffcdbccd6678d934c4bf538394345ce2... rebase-i: change1
+You can amend the commit now, with
+
+        git commit --amend 
+
+Once you are satisfied with your changes, run
+
+        git rebase --continue
+
+--- snip ---
+
+So we modify the files we need and then add them to the staging area, as usual:
+
+$ git add test/rebase-interactive.txt
+
+Then we amend the current commit:
+
+$ git commit --amend
+
+This brings up our editor with the standard amend text. We can modify the commit message there.
+
+$ git commit --amend
+[detached HEAD a59d1e3] rebase-i: change1 -- amended
+ Date: Thu Apr 28 09:56:54 2016 +0200
+ 1 file changed, 2 insertions(+)
+
+Then we can proceed with our rebase script with git-rebase:
+
+$ git rebase --continue
+error: could not apply a7ce8e1... rebase-i: change2
+
+When you have resolved this problem, run "git rebase --continue".
+If you prefer to skip this patch, run "git rebase --skip" instead.
+To check out the original branch and stop rebasing, run "git rebase --abort".
+Could not apply a7ce8e151ca83e9bc2e2ef202333cac5218f036b... rebase-i: change2
+
+This is because our change conflicts with the next commit in the script. The way
+to resolve the conflict is identical as for merge conflicts. We edit the conflicting
+file and see that Git inserted conflict markers there:
+
+Interactive rebase text file.
+
+<<<<<<< HEAD
+Change 1 --- Amended this change
+=======
+Change 1
+Change 2
+>>>>>>> a7ce8e1... rebase-i: change2
+
+After we edit the file, it's interesting to see output of git-status:
+
+$ git status
+rebase in progress; onto d20bf4e                        <--- REBASE IN PROGRESS MARKER
+You are currently rebasing branch 'master' on 'd20bf4e'.
+  (fix conflicts and then run "git rebase --continue")
+  (use "git rebase --skip" to skip this patch)
+  (use "git rebase --abort" to check out the original branch)
+
+Unmerged paths:
+  (use "git reset HEAD <file>..." to unstage)
+  (use "git add <file>..." to mark resolution)
+
+        both modified:   test/rebase-interactive.txt
+
+Again, this looks like a regular merge conflict with adnotation that a rebase is in progress.
+We perform git-add, as advised:
+
+$ git add test/rebase-interactive.txt
+
+$ git rebase --continue
+
+The last command brings up the editor with the commit message (because we manually 
+modified this second commit, too).
+
+rebase-i: change2
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# rebase in progress; onto d20bf4e
+# You are currently rebasing branch 'master' on 'd20bf4e'.
+#
+# Changes to be committed:
+#       modified:   test/rebase-interactive.txt
+
+After we save and exit, Git proceeds with the script:
+
+$ git rebase --continue
+[detached HEAD 06dd1dd] rebase-i: change2
+ 1 file changed, 1 insertion(+)
+Successfully rebased and updated refs/heads/master.
+
+Despite the sole note about the second commit, Git actually applied all remaining commits (including commit #3).
+This is the final git-log output:
+
+$ git log --pretty=oneline -4
+00b5b7fd4b353d8ba9d06627cccc2d1dcfab5ce9 rebase-i: change3
+06dd1ddbf3542b276584fcdd4c495737006bfd82 rebase-i: change2
+a59d1e33709a6481af81541cde4e9dbe58105942 rebase-i: change1 -- amended
+d20bf4e2b566c209936756f26271e57ade525105 interactive rebase test file - initial version
+
+
