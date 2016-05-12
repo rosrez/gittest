@@ -5,7 +5,7 @@ The most trivial example of a merge is when two branches share a common ancestor
 same point while the other branch includes some changes. That is, one branch is directly ahead of the other.
 In our example, we branched off master to create feature1 branch, did some work there and are now ready to merge
 the changes back into master. Since feature1 is directly ahead of master, it's enough to collect all the differences
-in commit since the common ancestor and apply those differences to master. This is called 'fast forward'.
+in commits that took place since the common ancestor and apply those differences to master. This is called 'fast forward'.
 
 $ git merge feature1
 Updating a5f07c2..0a8efd9
@@ -15,7 +15,7 @@ Fast-forward
  create mode 100644 test/feature1.txt
 
 Now, the latest commit from feature1 branch is visible in the master branch. (feature1 and master differed 
-by only this single commit):
+by only that single commit):
 
 $git log --oneline
 0a8efd9 feature1 change

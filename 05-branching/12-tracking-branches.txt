@@ -7,12 +7,12 @@ $ git checkout -b public-branch1 origin/public-branch1
 Branch public-branch1 set up to track remote branch public-branch1 from origin.
 Switched to a new branch 'public-branch1'
 
-Checking out a local branch from a remote-tracking branch automatically creates what is called a "tracking branch". 
+Checking out a local branch from a remote-tracking branch automatically creates what is called a (local) "tracking branch". 
 The branch it tracks is called an "upstream branch". Tracking branches are local branches that have a direct relationship
 to a remote branch.
 
-If you are on a tracking branch and type "git pull", Git automatically knows which server to fetch from and 
-branch to merge into.
+If you are on a tracking branch and type "git pull", Git automatically knows which remote (i.e. server) to fetch from and 
+which remote tracking branch (e.g. origin/feature1) to merge into our current branch.
 
 NOTE: When you clone a repository using git-clone, Git automatically creates a master branch that tracks origin/master.
 
@@ -37,7 +37,7 @@ This will create the "newbranch" branch off "origin/public-branch1".
 @@
 3. SETTING AN UPSTREAM BRANCH
 
-If you already have a local branch and want to set it to a remote branch you just pulled down, or want to change the upstream branch you're tracking, you can use the -u or --set-upstream-to option to git-branch to explicitly set it at any time.
+If you already have a local branch and want to set it to track a remote branch you just fetched, or want to change the upstream branch you're tracking, you can use the -u or --set-upstream-to option to git-branch to explicitly set it at any time.
 
 $ git branch -u origin/public-branch1
 

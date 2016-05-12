@@ -48,12 +48,16 @@ de9d409 Merge document housekeeping: changed location
 53e3af9 Merged a conflicting change from mediumfeature
 ....
 
+a5f07c2 (HEAD -> master, origin/master, origin/HEAD, feature1) Merge race condition
+^^^^^^^  ^^^^^^^^^^^^^^                              ^^^^^^^^
+COMMIT   CURRENT BRANCH == master                    OUR NEW BRANCH == feature1
+
 It is only after additional work gets done in either 'master' or 'feature1' when the branches start
 to diverge and point to different last commits. However, since each commit has at least one parent, both
 branches can be traced back to their common ancestor commit.
 
 Note the HEAD pointer in the above output. The HEAD is just a pointer to a commit for the current branch. 
-So, in this case HEAD is pointing to 'master', which in turn points to master's last commit. Our newly created
+So, in this case, HEAD is pointing to 'master', which in turn points to master's last commit. Our newly created
 'feature1' branch is pointing to the same commit:
 
                                                  HEAD

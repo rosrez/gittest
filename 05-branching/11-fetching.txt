@@ -11,7 +11,7 @@ On branch master
 Your branch is up-to-date with 'origin/master'.
 nothing to commit, working directory clean
 
-This means our origin/master *does not* reflect the latest state of the remote's master branche (we know another
+This means our origin/master *does not* reflect the latest state of the remote's master branch (we know another
 person has committed to it). Collaborators will never know until they perform git-fetch from the remote.
 
 If one of our collaborators fetches from the server, they will get a reference to where 

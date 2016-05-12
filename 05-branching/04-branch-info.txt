@@ -59,7 +59,7 @@ The basic git-log commant shows just the *current* branch's log history (includi
 preceding this branch). That is, git-log just traverses the parent subtree. To display commits from
 all branches, add --all switch.
 
-1) Adding branch-related info about logs
+1) Adding branch-related info about logs (--decorate)
 
 git log --oneline --decorate
 
@@ -73,7 +73,7 @@ The --decorate switch adds extra branch-related info to the output that normally
 Here, we can see that the last commit pertains to the 'feature1' branch, which is the current branch
 pointed to by HEAD (HEAD -> feature1).
 
-2) Adding more graph info about logs
+2) Adding more graph info to git-log (--all: commits from all branches, --graph: display a graph)
 
 $ git log --oneline --decorate --graph --all
 * 0a8efd9 (feature1) feature1 change

@@ -41,7 +41,7 @@ performed to synchronize work with the remote repository:
 
 $ git fetch origin
 
-This updates the pointer to your origin/master local reference.
+This updates the pointer to your origin/master local reference, as well as other local references, such as origin/branch1, origin/branch2, and so on.
 
 If we had added another remote, say team1, we could issue a similar git-fetch command:
 

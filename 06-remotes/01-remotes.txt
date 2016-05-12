@@ -1,9 +1,12 @@
+@@
+1. WHAT ARE REMOTES?
+
 Remotes are just convenience bookmarks that point to full addresses of remotes. We could use full URLs anywhere we use a remote name, even with git push/pull.
 
-origin is just the default remote that is created when you git-clone a remote repo.
+'origin' is just the default remote that is created when you git-clone a remote repo.
 
 1. It's possible to have as many remote repositories as you wish.
-2. If you've cloned, the DEFAULT NAME is origin. The 'origin' repo doesn't any special properties.
+2. If you've cloned, the DEFAULT NAME is origin. The 'origin' repo doesn't have any special properties.
 
 3. To see the remotes, issue the following command:
 
@@ -31,7 +34,7 @@ NOTE. This allows us to use alternative ways of communicating with the same repo
 
 git remote add oleg git://mybox/repo1.git
 
-We would have to open TCP port 9418 on mybox to actually make the repo visible to access from outside.
+We would have to open TCP port 9418 on mybox to actually make the repo visible from outside.
 
 6. git fetch 
 
@@ -59,7 +62,7 @@ Perform this command:
 
 git fetch
 ---------
-This will fetch ALL REMOTE BRANCHES but NOT MERGE THEM into any local branch.
+This will fetch ALL REMOTE BRANCHES (aka. remote-tracking branches) but NOT MERGE THEM into any local branch.
 
 And then
 

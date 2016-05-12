@@ -35,4 +35,3 @@ We can ussue the following command to check this.
 
 As we can see, 'feature1' does not appear on the remote branch list yet. We need an explicit git-push
 to push it to a remote repository of our choice.
-

@@ -59,8 +59,6 @@ Next, we just perform git-add on this file, which marks this conflict as resolve
 
 $ git add test/feature1.txt
 $ git status
-
-$ git status
 On branch master
 Your branch is ahead of 'origin/master' by 5 commits.
   (use "git push" to publish your local commits)

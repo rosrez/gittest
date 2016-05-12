@@ -15,23 +15,23 @@ fd3f9cff94719ffbc5d63d2e50364b094db6c7ea Added basic workflow               <---
 c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
 abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
 
-git log hash
+git log <hash>
 ------------
-If can specify an individual hash (i.e. commit), then the command will display that commit and all commits before that:
+If you specify an individual hash (i.e. commit), then the command will display that commit and all commits before that:
 
 $ git log --pretty=oneline 3123534c8a8ee67adebc02e01b93455f215fbffd
 3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions
 c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
 abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
 
-We can just provide a shorthand version of the commit hash, like below, and get the same output:
+We can just provide a shorthand version (5 or 7 digits) of the commit hash, like below, and get the same output:
 
 $ git log --pretty=oneline 31235
 3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions
 c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
 abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
 
-git will only complain if the first digits are ambiguous, in which case all we need to add a few extra digits to resolve the ambiguity.
+git will only complain if the first digits are ambiguous, in which case all we need to do is add a few extra digits to resolve the ambiguity.
 
 git log hash1..hash2
 -------------------
@@ -40,7 +40,7 @@ Displays a range of commits starting from hash1 (exclusive) to hash2 (inclusive)
 $ git log --pretty=oneline 31235..fd3f9c
 fd3f9cff94719ffbc5d63d2e50364b094db6c7ea Added basic workflow
 
-Above, we labelled 31235 as C1 and fd3f9 as C2. C1 and C2 are just a single commit apart, i.e. C2 immediatele follows C1. As we can see, only C2 is output.
+Above, we labelled 31235 as C1 and fd3f9 as C2. C1 and C2 are just a single commit apart, i.e. C2 immediately follows C1. As we can see, only C2 is output.
 
 NOTE: Remember the right order of commits, this has to be chronological (the earlier commit must come first).
 

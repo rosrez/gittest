@@ -1,3 +1,6 @@
+@@
+1. TAGS EXPLAINED
+
 Tags are basically hashes, just like commits and branches. These are just named markers, usually used to provide info to repo users of 'important' commits, like working snapshots of code, releases, etc.
 
 We can mark last good builds as tags and releases as heavyweight tags.
@@ -27,7 +30,7 @@ Now, if we do a git-push, nothing gets pushed to the remote repo:
 $ git push
 Everything up-to-date
 
-The reason is that the TAG IS LOCAL to the machine where it is created. TAGS ARE NOT PUSHED, tags must be pushed explicitly. The command to push tags is:
+The reason is that the TAG IS LOCAL to the machine where it is created. TAGS ARE NOT PUSHED BY DEFAULT; tags must be pushed explicitly. The command to push tags is:
 
 git push --tags
 ---------------
@@ -56,6 +59,4 @@ DELETING TAGS
 git tag -d <TAGNAME>
 --------------------
 
-Deleting tags is normal if you make a typo in the tag's way and the TAG IS NOT YET PUSHED. Otherwise, git-push will complain. We can force git-push to make that change to the remote with the --force option, but it is also going to affect any subsequent pulls by other team members and is best avoided.
-
-
+Deleting tags is normal if you make a typo in the tag's name and the TAG IS NOT YET PUSHED. Otherwise, git-push will complain. We can force git-push to make that change to the remote with the --force option, but it is also going to affect any subsequent pulls by other team members and is best avoided.

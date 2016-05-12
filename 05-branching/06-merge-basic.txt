@@ -41,9 +41,18 @@ Merge made by the 'recursive' strategy.
  1 file changed, 2 insertions(+)
  create mode 100644 test/feature2.txt
 
-*Recursive strategy* here denotes that does a three-way merge. That is, it first
+*Recursive strategy* here denotes that Git does a three-way merge. That is, it first
 finds the common ancestor of the branches being merged and applies changes in both
 branches while making sure they don't conflict.
 
 Git then creates another commit, which incorporates all the changes. The commit has two
-parents, which is reflected in the git log --graph output.
+parents, which is reflected in the git log --graph output:
+
+*     05ad622 Merge branch 'feature2': results in a special commit with 2 parents
+|\    
+| *   992d0c8 feature2 development
+* |   08e83ce Change in mainline: diverges from feature2
+|/    
+*   0a8efd9 feature1 change
+   
+

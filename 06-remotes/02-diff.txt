@@ -14,7 +14,7 @@ EXAMPLES
 git diff branch1 branch2, OR the equivalent
 git diff branch1..branch2
 
-then we compare heads of those branches. We can refer to arbitrary commits within those branches using the usual natigational shortcuts, ~ and ^:
+then we compare heads of those branches. We can refer to arbitrary commits within those branches using the usual navigational shortcuts, ~ and ^:
 
 git diff branch1^^^..branch2^
 
@@ -22,9 +22,8 @@ git diff branch1^^^..branch2^
 
 3) If we commit local and remote branches we use the syntax:
 
-git diff branch remote/branch; if remote is the default origin then it will look like this:
-git diff branch origin/branch
+git diff <branch> <remote>/<branch>; if remote is the default origin then it will look like this:
+
+git diff branchname origin/branchname
 
 One useful option to git-diff is --word-diff which displays not just different lines but individual words. Useful to track down changes like constants, strings, etc.
-
-

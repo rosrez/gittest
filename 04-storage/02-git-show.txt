@@ -10,39 +10,21 @@ git log HEAD^^..HEAD -p  <--------------- -p stands for 'patch'
 
 EXAMPLE 1
 
-git show
-commit c7ffaf6a4e3b17743173e07911c6fa1a1686375a
+$ git show
+commit 4d80361169149a14887aabd486a56dae5ff12d8d
 Author: Oleg Rosowiecki <rosrez@o2.pl>
-Date:   Sun Nov 22 22:54:21 2015 +0100
+Date:   Thu May 12 08:23:32 2016 +0200
 
-    Global settings
+    initial .gitignore - ignore vim swap files
 
-diff --git a/01-setup/01-global-settings.txt b/01-setup/01-global-settings.txt
+diff --git a/.gitignore b/.gitignore
 new file mode 100644
-index 0000000..256f699
+index 0000000..f4a4e73
 --- /dev/null
-+++ b/01-setup/01-global-settings.txt
-@@ -0,0 +1,22 @@
-+The bare minimum global setttings:
-+
-+$ git config --global user.name "Oleg Rosowiecki"
-+$ git config --global user.email "rosrez@o2.pl"
-+$ 
-+$ git config --global color.ui "auto"
-+
-+Optionally, you can create an SSH key pair to access your repo via SSH.
-+
-+$ ssh-keygen -t rsa -C"rosrez@o2.pl"
-+Generating public/private rsa key pair.
-+Enter file in which to save the key (/home/admin/.ssh/id_rsa):  
-+Created directory '/home/admin/.ssh'.
-+Enter passphrase (empty for no passphrase): 
-+Enter same passphrase again: 
-+Your identification has been saved in /home/admin/.ssh/id_rsa.
-+Your public key has been saved in /home/admin/.ssh/id_rsa.pub.
-+....
-+
-+-C just takes a comment and can be whatever we need, but it's common practice to use your e-mail address.
-+
-+
++++ b/.gitignore
+@@ -0,0 +1,4 @@
++# Vim
++*~
++*.swp
++*.swo
 

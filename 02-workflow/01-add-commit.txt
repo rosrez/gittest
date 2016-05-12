@@ -65,7 +65,7 @@ Acts like git commit but doesn't open an editor since the message is provided.
 git rm --cached <file>
 ----------------------
 
-Removes the file from the staging area, so that it's not a committed at the next commit.
+Removes the file from the staging area, so that it's not committed at the next commit.
 
 git add .
 ---------
@@ -73,16 +73,12 @@ git add .
 Adds all untracked files from the current directory to a repo recursively (i.e. includes subdirs).
 
 
-
-
-git add .
-
 ADD AND COMMIT IN ONE COMMAND
 -----------------------------
 
-git commit -a -m'Comment'
+git commit -a -m 'Commit message'
 ------------------------
+
+(also git commit -am 'Commit message'
+
 This command adds and commits changes to all TRACKED files, i.e. the ones that have previously been added/committed. This notation DOESN'T WORK FOR NEW FILES.
-
-
-
