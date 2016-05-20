@@ -1,0 +1,88 @@
+@@
+1. GIT-TAG COMMAND USED TO CREATE TAGS
+
+There are two types of tags: lightweight and annotated (aka. heavyweight).
+
+@@
+2. LIGHTWEIGHT TAGS
+
+A lightweight tag is very much like a branch that doesn't change - it's just a pointer to a specific commit.
+
+@@
+3. ANNOTATED TAGS
+
+Annotated tags are stored as full objects in the Git database. They are checksummed; contain the tagger name,
+email, and date; have a tagging message; and can be signed and verified with GNU Privacy Guard (GPG).
+It's generally recommended that you create annotated tags so you can have all this information; but if you want
+a temporary tag or for some reason don't want to keep the other information, lightweight tags are available too.
+
+@@
+4. ANNOTATED TAGS - CREATING
+
+Use 'git tag -a' to create an annotated tag:
+
+
+Then we can use git-show to refer to that specific commit from any branch/point in history.
+
+$ git show --quiet snapshot01
+tag snapshot01
+Tagger: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Thu May 19 10:41:11 2016 +0200      <-- TAG TIMESTAMP
+
+Snapshot 1              <--- THIS IS THE DESCRIPTION THAT PERTAINS SOLELY TO THE TAG, NOT THE COMMIT IT REFERS TO.
+
+commit 86f43edced39c639bd6985a1139cdef77e0fb806
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Thu May 19 10:39:36 2016 +0200      <-- COMMIT TIMESTAMP
+
+    filename changes    <---- THIS IS A NORMAL COMMIT MESSAGE.
+
+Note the --quiet option to git-show; this is just to suppress the default diff output that is produced by git-show.
+
+@@
+5. LIGHTWEIGHT TAGS - CREATING
+
+Use git-tag without the -a, -m or -s options, like this:
+
+$ git tag snapshot01-lw
+
+Now if we run git-show on the lightweight tag, we'll only see the information about the commit it points to, not the tag itself:
+
+$ git show --quiet snapshot01-lw
+commit 86f43edced39c639bd6985a1139cdef77e0fb806
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Thu May 19 10:39:36 2016 +0200
+
+    filename changes
+
+@@
+6. TAGGING LATER
+
+To create a tag after the fact, just check your history with git-log and choose the commit you'd like to tag.
+Then use the commit checksum (or part of it) at the end of the tag command:
+
+$ git log --pretty=oneline -5
+86f43edced39c639bd6985a1139cdef77e0fb806 filename changes
+73556fdc9a80349e84286e67c55a8a7eb434ba07 filename changes
+cebc7a3f920d348b9c4360d685cbeb7eb384eb3b mainline change 4
+03efd4717274d75ea253e2dcef9f369b92a34454 mainline change 3
+ab6b31a284efb64355a0f7d8c2b1fe71c852c2cd Merge branch 'compare' <--- WILL TAG THIS COMMIT
+
+$ git tag -a merge01 -m 'Merge 1' ab6b31
+
+Use git show to see what the new tag refers to:
+
+$ git show --quiet merge01
+tag merge01
+Tagger: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Thu May 19 11:05:24 2016 +0200
+
+Merge 1
+
+commit ab6b31a284efb64355a0f7d8c2b1fe71c852c2cd
+Merge: aeac208 7955318
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Thu May 19 08:28:25 2016 +0200
+
+    Merge branch 'compare'
+

@@ -1,0 +1,37 @@
+@@
+1. LISTING TAGS
+
+git-tag without arguments lists available tags. The tags are sorted in alphabetical order, so it's impossible to
+see which tags where created first.
+
+$ cd ~/osrc/libreswan
+$ git tag
+
+$ git tag
+0.9.9
+2.4.4
+...
+v3.13
+v3.14
+v3.14rc1
+v3.14rc2
+v3.14rc3
+v3.15
+v3.16
+v3.16rc2
+v3.16rc3
+v3.17
+v3.2
+...
+
+@@
+2. LISTING A SUBSET OF TAGS
+
+git-tag can filter its output based on a text pattern:
+
+$ git tag -l "v3.14*"
+v3.14
+v3.14rc1
+v3.14rc2
+v3.14rc3
+

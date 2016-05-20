@@ -1,0 +1,145 @@
+@@
+1. GIT-DIFF WITHOUT ARGUMENTS COMPARES AGAINST INDEX
+
+1) Make a change and see that git-diff detects the change and shows the expected difference:
+
+$ echo "diff change 1" >> test/mainline.txt
+
+$ git diff
+diff --git a/test/mainline.txt b/test/mainline.txt
+index 29cd9bf..45214ad 100644
+--- a/test/mainline.txt
++++ b/test/mainline.txt
+@@ -1,2 +1,3 @@
+ MAINLINE CHANGE
+  +diff change 1
+
+2) Add changes to index and run git-diff again:
+
+$ git add -u
+$ git diff
+
+The working directory is identical to index now.
+
+3) Make another change and see git-diff output this time:
+
+$ git diff
+diff --git a/test/mainline.txt b/test/mainline.txt
+index 29cd9bf..45214ad 100644
+--- a/test/mainline.txt
++++ b/test/mainline.txt
+@@ -1,2 +1,3 @@
+ MAINLINE CHANGE
+  diff change 1
+  +diff change 2
+
+Again, only the difference since last git-add (or git-rm) is displayed.
+
+4) Add the most recent changes to index and run git-diff yet again:
+
+$ git add -u
+$ git diff
+
+No difference between the index and working directory anymore.
+
+@@
+2. GIT-DIFF <commit> COMPARES CURRENT INDEX TO THAT COMMIT
+
+The most obvious example would be 'git diff HEAD':
+
+$ git diff HEAD
+diff --git a/test/mainline.txt b/test/mainline.txt
+index 46208e8..45214ad 100644
+--- a/test/mainline.txt
++++ b/test/mainline.txt
+@@ -1 +1,3 @@
+ MAINLINE CHANGE
+ +diff change 1
+ +diff change 2
+
+This compares the current index to the most recent commit (within the current branch).
+The command can be used to check the differences in the staging area we are about to commit.
+
+NOTE: The same effect can be obtained with git-status:
+
+$ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+Changes to be committed:
+  (use "git reset HEAD <file>..." to unstage)
+
+    modified:   test/mainline.txt
+
+@@
+3. GIT-DIFF <commit1> <commit2> COMPARES TWO ARBITRARY COMMITS
+
+The commits do not have to be descendants of one another, as in the following example.
+
+1) Create a new branch and switch to it:
+
+$ git checkout -b compare
+Switched to a new branch 'compare'
+
+2) Make a change and commit:
+
+$ echo "feature2.extra2 = extra stuff #2.2" >> test/feature2.txt
+
+$ git commit -am "feature2.extra2"
+[compare 7955318] feature2.extra2
+ 1 file changed, 1 insertion(+)
+
+3) Switch back to master branch:
+
+$ git checkout master
+Switched to branch 'master'
+
+4) Make a change and commit:
+
+$ echo "MAINLINE CHANGE 2" >> test/mainline.txt
+
+$ git commit -am 'mainline change 2'
+
+5) Compare the tips of the two branches:
+
+$ git diff HEAD compare
+diff --git a/test/feature2.txt b/test/feature2.txt
+index d112e0d..b5a9226 100644
+--- a/test/feature2.txt
++++ b/test/feature2.txt
+@@ -1,2 +1,3 @@
+ feature2 = 02
+ feature2.extra1 = extra stuff #2.1
++feature2.extra2 = extra stuff #2.2
+diff --git a/test/mainline.txt b/test/mainline.txt
+index 1362a1f..45214ad 100644
+--- a/test/mainline.txt
++++ b/test/mainline.txt
+@@ -1,4 +1,3 @@
+ MAINLINE CHANGE
+ diff change 1
+ diff change 2
+-MAINLINE CHANGE 2
+
+This shows changes in 'master' with '-' and changes in 'compare' with '+'.
+
+We can reverse this notation by swapping branch/commit names, so:
+
+$ git diff compare HEAD
+diff --git a/test/feature2.txt b/test/feature2.txt
+index b5a9226..d112e0d 100644
+--- a/test/feature2.txt
++++ b/test/feature2.txt
+@@ -1,3 +1,2 @@
+ feature2 = 02
+ feature2.extra1 = extra stuff #2.1
+-feature2.extra2 = extra stuff #2.2
+diff --git a/test/mainline.txt b/test/mainline.txt
+index 45214ad..1362a1f 100644
+--- a/test/mainline.txt
++++ b/test/mainline.txt
+@@ -1,3 +1,4 @@
+ MAINLINE CHANGE
+ diff change 1
+ diff change 2
++MAINLINE CHANGE 2
+
