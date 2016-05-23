@@ -1,0 +1,40 @@
+@@
+1. BASIC SYNTAX
+
+Use "git config --global alias.<newname> <command". This will enable you to invoke "git command" by typing "git newname":
+
+$ git config --global alias.co checkout
+$ git config --global alias.ci commit
+$ git config --global alias.st status
+
+Now, you can type, for example:
+
+$ git st
+On branch master
+Your branch is ahead of 'origin/master' by 1 commit.
+  (use "git push" to publish your local commits)
+  nothing to commit, working directory clean
+
+@@
+2. ALIASES FOR COMMANDS WITH OPTIONS
+
+Use single quotes to specify a command with options when creating an alias for it:
+
+$ git config --global alias.unstage 'reset HEAD --'
+
+The preceding alias makes the following two commands equivalent:
+
+$ git unstage fileA
+$ git reset HEAD -- fileA
+
+Another example is the 'last' alias, to limit git-log to the last commit:
+
+$ git config --global alias.last 'log -1 HEAD'
+
+$ git last
+commit 9b2159f66b75d39826a26ead174b271966caf001
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Mon May 23 10:20:00 2016 +0200
+
+    tags: pushing & branching
+
