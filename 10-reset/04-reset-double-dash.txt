@@ -1,0 +1,17 @@
+@@
+1. THE -- IN GIT-RESET OR GIT-CHECKOUT: SEPARATES THE TREE FROM FILES
+
+git-checkout [commit/branch] path/to/file
+
+can confuse branches with paths, for example, if we have a file named "master",
+
+$ git checkout master
+
+will checkout the master branch instead of the master file. In order to tell Git
+we want the master *file* from our current HEAD, we can do:
+
+$ git checkout -- master
+
+The -- states that what follows will be paths to files, not branch names.
+
+The same is true for the git-reset command.
