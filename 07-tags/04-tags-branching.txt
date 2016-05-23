@@ -1,0 +1,9 @@
+@@
+1. BRANCHING FROM A TAG.
+
+If you want to put a version of your repository in your working directory that looks like a specific tag,
+you can create a new branch at a specific tag with "git checkout -b [branchname] [tagname]":
+
+$ git checkout -b branch-snap01 snapshot01
+Switched to a new branch 'branch-snap01'
+

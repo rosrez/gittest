@@ -1,0 +1,55 @@
+@@
+1. PUSHING INVIDIDUAL TAGS.
+
+By default, git-push doesn't transfer tags to remote servers. You will have to explicitly push tags to
+a shared server after you have created them. This process is just like sharing remote branches -
+you can run 'git push origin [tagname]'.
+
+$ git push origin snapshot01
+Password for 'https://rosrez@github.com': 
+Counting objects: 1, done.
+Writing objects: 100% (1/1), 165 bytes | 0 bytes/s, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To https://rosrez@github.com/rosrez/gittest.git
+ * [new tag]         snapshot01 -> snapshot01           <-- GIT DETECTED A NEW TAG THAT'S PUSHED UPSTREAM
+
+Now, if we pull from that server into another repository, git also pulls the new tag:
+
+$ git pull
+remote: Counting objects: 137, done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 137 (delta 28), reused 29 (delta 28), pack-reused 104
+Receiving objects: 100% (137/137), 26.12 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (68/68), completed with 16 local objects.
+From https://github.com/rosrez/gittest
+   f953da9..b1d1826  master     -> origin/master
+ * [new tag]         snapshot01 -> snapshot01           <--- GIT DETECTED A NEW TAGS ON THE REMOTE AND DOWNLOADED IT
+Already up-to-date.
+
+
+@@
+2. PUSHING ALL TAGS
+
+Use the --tags option to git-push to push all tags to the remote server that are not already there.
+
+$ git push --tags
+Password for 'https://rosrez@github.com': 
+Counting objects: 1, done.
+Writing objects: 100% (1/1), 161 bytes | 0 bytes/s, done.
+Total 1 (delta 0), reused 0 (delta 0)
+To https://rosrez@github.com/rosrez/gittest.git
+ * [new tag]         merge01 -> merge01                         <-- NEW TAG; PREVIOUSLY NOT ON SERVER
+ * [new tag]         snapshot01-lw -> snapshot01-lw             <-- NEW TAG; PREVIOUSLY NOT ON SERVER
+
+Now pull from another repository:
+
+$ git pull
+remote: Counting objects: 1, done.
+remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (1/1), done.
+From https://github.com/rosrez/gittest
+ * [new tag]         merge01    -> merge01                      <-- NEW TAG; PREVIOUSLY NOT IN REPO
+ * [new tag]         snapshot01-lw -> snapshot01-lw             <-- NEW TAG; PREVIOUSLY NOT IN REPO
+Already up-to-date.
+
+
