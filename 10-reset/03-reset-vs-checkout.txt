@@ -1,0 +1,33 @@
+@@
+1. THE DIFFERENCE BETWEEN GIT-RESET AND GIT-CHECKOUT: *WITHOUT PATHS*
+
+Running "git checkout [branch]" is similar to running "git reset -- hard [branch]"
+in that it updates all three trees for you to look like [branch], but there are two
+important differences.
+
+First, unlike "reset --hard", checkout is working-directory safe; it will check to
+make sure it's not blowing away files that have changes to them. It even tries to
+do a trivial merge in the working directory, so all of the files you *haven't* changed
+in will be updated. "reset --hard", on the other hand, will replace everything across
+the board without checking.
+
+The second important difference is how it updates HEAD. Where "reset" will move the branch
+that HEAD points to, "checkout" will move HEAD itself to point to another branch.
+
+For instance, say we have "master" and "develop" branches which point at different commits,
+and we're currently on "develop" (so HEAD points to it). If we run
+
+$ git reset master
+
+"develop" itself will now point to the same commit that "master does". If we instead run:
+
+$ git checkout master
+
+"develop" does not move, HEAD itself does. HEAD will now point to "master".
+
+2. GIT-RESET VS. GIT-CHECKOUT *WITH PATHS*
+
+The other way to run git-checkout is with a file path, which, like git-reset, does not move HEAD.
+It is just like "git reset [branch] file" in that it updates the index with that file at that commit,
+but it also overwrites the file in the working directory. It would be exactly like "git reset --hard [branch] file"
+(if reset would let you run that) - it's not working-directory sae, and it does not move head.

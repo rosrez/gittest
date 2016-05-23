@@ -1,0 +1,41 @@
+@@
+1. RESET WITH PATH
+
+If you specify a path to git-reset, the command will skip step 1, i.e. it will not move the tip of the current branch.
+The command will also limit the remainder of its actions to a specific file or set of files.
+
+In other words, with paths, git-reset will partially update the index and (optionally) working directory with contents
+of a selected commit.
+
+1) UNSTAGING A FILE
+
+Assume we run:
+
+$ git reset file.txt
+
+This form (since we didn't specified a commit SHA-1 or branch, and we didn't specify --soft or --hard) is
+shorthand for git reset --mixed HEAD file.txt, which will:
+
+a) Move the branch HEAD points to (skipped)
+b) Make index look like HEAD (stop here).
+
+This essentially just copies file.txt from HEAD to index. This has the practical effect of *unstaging* the file.
+This is the exact opposite of what git-add does.
+
+NOTE: This is why the git-status command suggest that you run this to unstage a file.
+
+2) PULL A FILE FROM A SPECIFIC COMMIT TO *INDEX*
+
+If we don't let Git assume it has to pull the file(s) from HEAD ***to our index***, we just specify a commit, like this:
+
+$ git reset eb43f file.txt
+
+This will copy some previous/other version of file.txt to our index, but the working copy will remain the same. We could now
+commit the change and produce a commit with content that has never been in our working directory (at least prior to the commit).
+
+3) PULL A FILE FROM A SPECIFIC COMMIT TO *INDEX + WORKING DIRECTORY*
+
+We could try this command to use "reset --hard" to perform the preceding operation *and* update the working directory 
+with the recently pulled file in our index. However, "reset --hard" cannot be invoked on paths. Use git-checkout instead:
+
+$ git checkout eb43f -- file.txt

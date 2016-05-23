@@ -1,0 +1,36 @@
+@@
+1. RESET STEPS EXPLAINED
+
+Reset does *up to* three basic operations:
+
+1) MOVE HEAD (git reset --soft)
+
+The first thing git-reset will do is move what HEAD points to. This isn't the same as what git-checkout does;
+checkout changes the HEAD itself (makes it point to the tip of a different branch). Reset moves the tip
+of the current branch.
+
+With "reset --soft", Git will stop after making this step. The index and working directory will stay the same.
+
+This essentially undoes the last git-commit command(s). For example, if we run:
+
+$ git reset --soft HEAD~
+
+This will reset the tip of our branch to the parent commit of the last commit. Any changes made since that parent
+commit will still remain in the working directory and in index, so if we commit them again we'll produce the
+same effect as "git commit --amend" would have done.
+
+2) UPDATING THE INDEX (git reset [--mixed])
+
+The next thing git-reset will do is to update the index with the contents of whatever snapshot HEAD now points to.
+
+With "reset --mixed" (which is the default), Git will stop after updating the index with contents of the changed HEAD.
+
+This undoes both the last commit commands and the last add commands (the changes only remain in your working directory).
+
+3) UPDATING THE WORKING DIRECTORY (git reset --hard)
+
+The third thing git-reset will do is to make the working directory look like the index. This undoes both the commit(s),
+add(s) and the work you did in your working directory.
+
+NOTE: reset --hard is the only really dangerous variant of the git-reset command. It may actually destroy important
+data if you're not careful.
