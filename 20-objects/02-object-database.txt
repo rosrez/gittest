@@ -1,0 +1,152 @@
+@@
+1. PREPARATION
+
+Create a new repository with a small amount of history.
+
+$ mkdir gitsmall && cd gitsmall
+ 
+ 
+$ git init
+Initialized empty Git repository in /home/admin/src/git/gitsmall/.git/
+ 
+ 
+$ echo 'hello world' > file.txt
+$ git add .
+$ git commit -m 'initial commit'
+[master (root-commit) 0b5a531] initial commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 file.txt
+ 
+$ echo 'hello world!' > file.txt
+$ git commit -am "add emphasis"
+[master 79472dc] add emphasis
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+@@
+2. EXPLORING OBJECTS. EXPLORING A COMMIT
+
+Use "git cat-file" to explore internal Git objects. For example, let's check the type of object that contains our first commit:
+
+$ git cat-file -t 0b5a531
+commit                      <--- GIT INDICATES IT'S A COMMIT
+
+We use the same command with the "commit" parameter to see the contents of the commit:
+
+$ git cat-file commit 0b5a531
+tree 92b8b694ffb1675e5975148e1121810081dbdffe
+author Oleg Rosowiecki <rosrez@o2.pl> 1464103763 +0200
+committer Oleg Rosowiecki <rosrez@o2.pl> 1464103763 +0200
+
+initial commit
+
+Note that this looks very similar to what git-log our git-show would have displayed.
+But "git cat-file" shows something extra: the tree object this commit refers to.
+
+@@
+3. EXPLORING TREES
+
+$ git ls-tree 92b8b69
+100644 blob 3b18e512dba79e4c8300dd08aeb37f8e728b8dad    file.txt
+
+We see that the tree contains just a single object whose type is blob and that the blob contains file.txt. As before, we can see the type of the object with "git cat-file -t":
+
+$ git cat-file -t 3b18e512
+blob
+
+@@
+4. EXPLORING BLOBS
+
+We can examine with "git cat-file blob":
+
+$ git cat-file blob 3b18e512
+hello world
+
+@@
+5. WHERE DO OBJECTS RESIDE?
+
+Objects are stored in the .git/objects directory
+
+$ find .git/objects -ls
+4732094    4 drwxrwxr-x  10 admin    admin        4096 May 24 17:29 .git/objects
+4732097    4 drwxrwxr-x   2 admin    admin        4096 May 24 17:29 .git/objects/3b
+4732098    4 -r--r--r--   1 admin    admin          28 May 24 17:29 .git/objects/3b/18e512dba79e4c8300dd08aeb37f8e728b8dad
+4732095    4 drwxrwxr-x   2 admin    admin        4096 May 24 17:28 .git/objects/pack
+4732113    4 drwxrwxr-x   2 admin    admin        4096 May 24 17:29 .git/objects/79
+4732114    4 -r--r--r--   1 admin    admin         163 May 24 17:29 .git/objects/79/472dc472803894c3b42b38f440ebafeddd9a5a
+4732101    4 drwxrwxr-x   2 admin    admin        4096 May 24 17:29 .git/objects/0b
+4732102    4 -r--r--r--   1 admin    admin         131 May 24 17:29 .git/objects/0b/5a531d3b091b81920cadeaf2b4218509080eb0
+4732099    4 drwxrwxr-x   2 admin    admin        4096 May 24 17:29 .git/objects/92
+4732100    4 -r--r--r--   1 admin    admin          53 May 24 17:29 .git/objects/92/b8b694ffb1675e5975148e1121810081dbdffe
+4732096    4 drwxrwxr-x   2 admin    admin        4096 May 24 17:28 .git/objects/info
+4732111    4 drwxrwxr-x   2 admin    admin        4096 May 24 17:29 .git/objects/d0
+4732112    4 -r--r--r--   1 admin    admin          53 May 24 17:29 .git/objects/d0/492b368b66bdabf2ac1fd8c92b39d3db916e59
+4732109    4 drwxrwxr-x   2 admin    admin        4096 May 24 17:29 .git/objects/a0
+4732110    4 -r--r--r--   1 admin    admin          29 May 24 17:29 .git/objects/a0/423896973644771497bdc03eb99d5281615b51
+
+The contents of these files is just the compressed data plus a header identifying their length and type. 
+The type is either a blob, a tree, a commit, or a tag.
+
+@@
+6. THE HEAD COMMIT
+
+This commit points to the tip of the current branch. It's location is .git/HEAD:
+
+$ cat .git/HEAD
+ref: refs/heads/master
+
+So this is just a pointer that points to the "heads" directory that contains tips of individual branches.
+Let's examine the contents of this file:
+
+$ cat .git/refs/heads/master 
+79472dc472803894c3b42b38f440ebafeddd9a5a
+
+This is just the hash of our most recent commit, which we may examine with "git cat-file".
+
+@@
+7. TIPS OF ALL BRANCHES
+
+Tips of local branches are stored in .git/refs/heads:
+
+$ ll .git/refs/heads
+total 4
+-rw-rw-r--. 1 admin admin 41 May 24 17:29 master
+
+If we look at a different Git repository, we may see more branches:
+
+$ ll .git/refs/heads
+total 48
+-rw-rw-r--. 1 admin admin 41 May 19 08:10 compare
+-rw-rw-r--. 1 admin admin 41 May 19 09:13 compare2
+-rw-rw-r--. 1 admin admin 41 Apr 25 12:30 feature2
+-rw-rw-r--. 1 admin admin 41 Apr 25 16:15 feature-fix1
+-rw-rw-r--. 1 admin admin 41 May 23 12:39 master
+-rw-rw-r--. 1 admin admin 41 Nov 29  2015 mediumfeature
+-rw-rw-r--. 1 admin admin 41 Nov 23  2015 newidea
+-rw-rw-r--. 1 admin admin 41 Nov 23  2015 origin
+-rw-rw-r--. 1 admin admin 41 Apr 25 17:47 public-branch1
+
+@@
+99. GIT OBJECT SUMMARY
+
+* The name of the current branch is stored in .git/HEAD
+* References to commit objects at the head of each branch are stored in files under .git/refs/heads
+* "Commit" objects refer to "tree" objects representing the snapshot of a directory tree at a particular
+  point in the history, and refer to "parent" commits to show how they're connected into the project history.
+* "Tree" objects represent the state of a single directory, associating directory names to "blob" objects
+  containing file data and "tree" objects containing subdirectory information.
+* "blob" objects contain file data without any other structure.
+
+This can be represented as follows:
+
+HEAD --> refs/heads/<current branch> --> commit --> parent commit
+                                            |
+                                            V
+                                           tree
+                                            |
+                                  +---------+---------+
+                                  |         |         |
+                                  V         V         V
+                                tree1     tree2     tree3
+                               (blob11)  (blob21)  (blob31)
+                               (blob12)  (blob22)  (blob32)
+                               (blob13)  (blob23)  (blob33)
