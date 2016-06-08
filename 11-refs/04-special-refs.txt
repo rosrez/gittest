@@ -1,0 +1,11 @@
+@@
+1. SPECIAL REFS (.git DIRECTORY)
+
+In addition to the refs directory, there are a few special refs that reside in the top-level .git directory. 
+They are listed below:
+•   HEAD – The currently checked-out commit/branch.
+•   FETCH_HEAD – The most recently fetched branch from a remote repo.
+•   ORIG_HEAD – A backup reference to HEAD before drastic changes to it.
+•   MERGE_HEAD – The commit(s) that you’re merging into the current branch with git merge.
+•   CHERRY_PICK_HEAD – The commit that you’re cherry-picking.
+

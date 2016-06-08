@@ -1,0 +1,7 @@
+@@
+1. GIT-REV-PARSE: THE SHORTHAND TO OBTAIN A COMMIT CORRESPONDING TO A REF
+
+git rev-parse <local branch|remote tracking branch|tag>, for example:
+
+$ git rev-parse master
+564848851cc692274ea86a71c9b83a9368889410
