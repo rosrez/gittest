@@ -1,0 +1,62 @@
+@@
+0. GIT-AM -- APPLYING PATCHES
+
+This assumes that we have created two patches from the two most recent commits in our master branch.
+
+@@
+1. PREPARATION - CREATE A TOPIC BRANCH FROM THREE COMMITS BACK
+
+$ git log -3
+commit 9cce118dd6e4e974e80d05fd573a04dd1d3e7f36
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Tue Jun 7 09:55:07 2016 +0200
+
+    version 2 in version.txt
+
+commit 5db08ca452fe95f083e19aeec7aa8849011c8e4a
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Mon Jun 6 16:16:10 2016 +0200
+
+    version.txt
+
+commit 564848851cc692274ea86a71c9b83a9368889410         <-- WE'LL CREATE A BRANCH OUT OF THIS COMMIT
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Mon Jun 6 14:21:22 2016 +0200
+
+    objects: object database
+
+Now create the branch from commit 564848851cc:
+
+$ git checkout -b patch01 564848851cc
+Switched to a new branch 'patch01'
+
+@@
+2. USE GIT-AM TO APPLY TWO PATCHES FROM THE SERIES ONE BY ONE
+
+# Check if version.txt exists
+$ ll test/version.txt
+ls: cannot access test/version.txt: No such file or directory
+
+# Apply patch #1 and see the effects
+$ git am 0001-version.txt.patch
+Applying: version.txt
+$ cat test/version.txt 
+Version 1
+
+# Apply patch #2 and see the effects
+$ git am 0002-version-2-in-version.txt.patch
+Applying: version 2 in version.txt
+$ cat test/version.txt 
+Version 2
+
+# Check recent commit history
+$ git log --pretty=oneline -3
+2e4cffeff5af6faff3c5c48cb4b997c40cd5b24b version 2 in version.txt       <-- APPLIED PATCH 2
+550e96e6ff08e3dcf3469f8e587f7aee1e2eb032 version.txt                    <-- APPLIED PATCH 1
+564848851cc692274ea86a71c9b83a9368889410 objects: object database
+
+@@
+3. RESOLVING CONFLICTS
+
+We can apply patches to any branches and in any order, as long as this makes sense. However, conflicts may arise
+in some scenarios. 

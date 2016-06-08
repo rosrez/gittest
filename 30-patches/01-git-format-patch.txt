@@ -1,0 +1,88 @@
+@@
+0. GIT-FORMAT-PATCH - CREATING PATCHES
+
+@@
+1. PREPARATION - GENERATE TWO COMMITS (ASSUME WE'RE ON master BRANCH)
+
+echo 'Version 1' > test/version.txt
+git add .
+git commit -m 'version.txt'
+
+echo 'Version 2' > test/version.txt
+git commit -am 'version 2 in version.txt'
+
+@@
+2. SHOW NEW COMMITS IN THE LOCAL BRANCH VS. REMOTE BRANCH (HEAD - origin/master)
+
+$ git log origin/master..HEAD
+commit 9cce118dd6e4e974e80d05fd573a04dd1d3e7f36
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Tue Jun 7 09:55:07 2016 +0200
+
+    version 2 in version.txt
+
+commit 5db08ca452fe95f083e19aeec7aa8849011c8e4a
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Mon Jun 6 16:16:10 2016 +0200
+
+    version.txt
+
+@@
+3. GIT-FORMAT-PATCH WILL CREATE A PATCH SERIES OUT OF THE SELECTED COMMIT RANGE
+
+Each patch corresponds to an individual commit from the range.
+
+$ git format-patch -M origin/master
+0001-version.txt.patch
+0002-version-2-in-version.txt.patch
+
+Note that each patch is named after its commit messages, i.e. "version 2 in version.txt" becomes
+0002-version-2-in-version.txt.patch.
+
+Here, -m is not strictly necessary but is good to include since it makes the command include renames into the patches.
+
+@@
+4. CONTENTS OF PATCH FILES
+
+$ cat 0001-version.txt.patch 
+From 5db08ca452fe95f083e19aeec7aa8849011c8e4a Mon Sep 17 00:00:00 2001
+From: Oleg Rosowiecki <rosrez@o2.pl>
+Date: Mon, 6 Jun 2016 16:16:10 +0200
+Subject: [PATCH 1/2] version.txt
+
+---
+ test/version.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 test/version.txt
+
+diff --git a/test/version.txt b/test/version.txt
+new file mode 100644
+index 0000000..fb8247c
+--- /dev/null
++++ b/test/version.txt
+@@ -0,0 +1 @@
++Version 1
+-- 
+2.5.5
+
+$ cat 0002-version-2-in-version.txt.patch 
+From 9cce118dd6e4e974e80d05fd573a04dd1d3e7f36 Mon Sep 17 00:00:00 2001
+From: Oleg Rosowiecki <rosrez@o2.pl>
+Date: Tue, 7 Jun 2016 09:55:07 +0200
+Subject: [PATCH 2/2] version 2 in version.txt
+
+---
+ test/version.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/version.txt b/test/version.txt
+index fb8247c..f44f8c6 100644
+--- a/test/version.txt
++++ b/test/version.txt
+@@ -1 +1 @@
+-Version 1
++Version 2
+-- 
+2.5.5
+
+
