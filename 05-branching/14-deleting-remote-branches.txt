@@ -3,4 +3,9 @@
 
 $ git push origin --delete public-branch1
 
+@@
+2. ANOTHER WAY TO DELETE A REMOTE BRANCH
 
+git push origin :public-branch1
+
+This was the only way to delete a remote branch prior to Git 1.7.0. Now, the --delete flag is the preferred technique.

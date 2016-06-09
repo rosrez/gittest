@@ -1,0 +1,10 @@
+@@
+1. FETCH_HEAD CONTAINS (MULTIPLE) TIP(S) OF REMOTE BRANCHES MOST RECENTLY FETCHED FROM REMOTE REPOS
+
+$ cat .git/FETCH_HEAD 
+f38c86cce00bf07610a52a6cdf4eac526356acb9        branch 'master' of https://github.com/rosrez/gittest
+5aa4533391731e382f3d0557f85bad1fe3021aed    not-for-merge   branch 'mediumfeature' of https://github.com/rosrez/gittest
+13476def06b9b61192ff00047f685dae4cf795a5    not-for-merge   branch 'newidea' of https://github.com/rosrez/gittest
+dde92faf58cde455994f3b58ac25bd43e814bbbe    not-for-merge   branch 'patch01' of https://github.com/rosrez/gittest
+24a2dc5b38f0954f827a4e437e2552782fd5fb7c    not-for-merge   branch 'public-branch1' of https://github.com/rosrez/gittest
+

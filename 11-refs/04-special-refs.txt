@@ -9,3 +9,14 @@ They are listed below:
 •   MERGE_HEAD – The commit(s) that you’re merging into the current branch with git merge.
 •   CHERRY_PICK_HEAD – The commit that you’re cherry-picking.
 
+These files contain different content depending on their type and the state of the repository. The HEAD ref
+can contain either a *symbolic ref*, which is simply a reference to another ref instead of a commit hash,
+or a commit hash. For example, take a look at the contents of HEAD when you're on the 'master' branch.
+
+$ cat .git/HEAD
+ref: refs/heads/master
+
+This means that the HEAD points to refs/heads/master ref. This is how Git knows that the 'master' branch
+is currently checked out. If you were to switch to another branch, the contents of HEAD would be
+updated to reflect the new branch. But, if you were to check out a commit instead of a branch, HEAD
+would containt a commit hash instead of a symbolic ref. This is how Git knows that it's in a detached HEAD state.

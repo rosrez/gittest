@@ -1,0 +1,44 @@
+@@
+1. WHAT IS REFLOG?
+
+The reflog is a chronological history of everything you've done in your local repository. To view the reflog,
+run the git-reflog command. The output may look like this:
+
+$ git reflog
+9ec836e HEAD@{0}: pull: Merge made by the 'recursive' strategy.
+9cce118 HEAD@{1}: checkout: moving from patch01 to master
+dde92fa HEAD@{2}: commit: git format-patch and git am
+2e4cffe HEAD@{3}: am: version 2 in version.txt
+550e96e HEAD@{4}: am: version.txt
+5648488 HEAD@{5}: checkout: moving from master to patch01
+9cce118 HEAD@{6}: commit: version 2 in version.txt
+5db08ca HEAD@{7}: commit: version.txt
+5648488 HEAD@{8}: commit: objects: object database
+986691e HEAD@{9}: commit: -- usage in git commands
+
+Not only does this include regular commits, but other actions like patching or switching branches.
+
+@@
+2. THE HEAD{<N>} SYNTAX
+
+This syntax lets you reference commits stored in the reflog. It works a lot like the HEAD~<n> references,
+but the <n> refers to an entry in the reflog instead of the commit history.
+
+@@
+3. GETTING REFERENCES TO DANGLING COMMITS
+
+You can use git-reflog to revert to a state that would otherwise be lost. For example, let's say you just
+scrapped a new feature with git-reset. Your reflog might look something like this:
+
+ad8621a HEAD@{0}: reset: moving to HEAD~3
+298eb9f HEAD@{1}: commit: Some other commit message
+bbe9012 HEAD@{2}: commit: Continue the feature
+9cb79fa HEAD@{3}: commit: Start a new feature
+
+The three commits before the git-reset are now dangling, which means that there is no way to reference them --
+except through the reflog. Now, let's say you realize that you shouldn't have thrown away all of your work. 
+All you have to do is check out the HEAD@{1} commit to get back to the state of your repository before you ran git-reset.
+
+git checkout HEAD@{1}
+
+This puts you in a detached HEAD state. From here, you can create a new branch and continue working on your feature.
