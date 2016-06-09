@@ -1,0 +1,15 @@
+@@
+1. HOW ARE REFS EXPANDED?
+
+When we specify a branch name in a command like git-log, it first expands the name to its full ref, so
+
+$ git log --pretty=oneline -1 master
+564848851cc692274ea86a71c9b83a9368889410 objects: object database
+
+is equivalent to:
+
+$  git log --pretty=oneline -1 refs/heads/master
+564848851cc692274ea86a71c9b83a9368889410 objects: object database
+
+Specifying a full branch ref is necessary, e.g. when there is a branch and a tag with identical names;
+only the full ref can disambiguate between the tag and the branch (refs/heads clearly contains branches, not tags).

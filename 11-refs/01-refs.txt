@@ -1,0 +1,46 @@
+@@
+1. GIT REFS ARE JUST CONVENIENT WAYS OF REFERRING TO INDIVIDUAL COMMITS
+
+$ tree .git/refs
+.git/refs
+├── heads                         <------ LOCAL BRANCHES
+│   └── master                      
+├── remotes                       <------ REMOTE BRANCHES
+│   └── origin                      
+│       ├── HEAD                  \
+│       ├── master                |
+│       ├── mediumfeature         |
+│       ├── mediumfeature2        | branches from remote "origin"
+│       ├── newidea               |
+│       ├── patch01               |
+│       └── public-branch1        /
+└── tags                           
+    ├── MEDIUMFEATURE_REL_01       \
+    ├── merge01                     |  TAGS
+    ├── snapshot01                  |
+    └── snapshot01-lw              /
+
+4 directories, 12 files
+
+
+@@
+2. FILES IN .git/refs ARE MOSTLY JUST PLAINTEXT REFERENCES TO COMMITS
+
+$ cat .git/refs/heads/master 
+564848851cc692274ea86a71c9b83a9368889410
+
+This matches git-log output:
+
+$ git branch
+* master
+
+$ git log --pretty=oneline -1
+564848851cc692274ea86a71c9b83a9368889410 objects: object database
+
+To change the location of the master branch, all Git has to do is change the contents of the refs/heads/master file. 
+Similarly, creating a new branch is simply a matter of writing a commit hash to a new file. This is part of 
+the reason why Git branches are so lightweight compared to SVN.
+
+The tags directory works the exact same way, but it contains tags instead of branches. The remotes directory lists 
+all remote repositories that you created with git remote as separate subdirectories. Inside each one, you’ll find all 
+the remote branches that have been fetched into your repository.
