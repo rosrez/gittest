@@ -97,10 +97,19 @@ $ git log --oneline --all --graph -6
 *   4d45fcb Merge branch 'feature3'
 
 It is now safe to merge our topic branch (cherrypick) into master since cherrypick is now upstream from master. So the merge
-will solely consist of a fast forward.
+will solely consist of a fast forward:
+
+$ git merge cherrypick
+Updating 80d9319..9243a94
+Fast-forward
+ 08-merges/01-merge.txt            |  76 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 09-cherry-pick/01-cherry-pick.txt | 106 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ test/feature3.txt                 |   1 +
+ test/version.txt                  |   2 +-
+ 4 files changed, 182 insertions(+), 3 deletions(-)
+ create mode 100644 09-cherry-pick/01-cherry-pick.txt
 
 NOTE: The same effect can be achieved with just a single command:
 $ git rebase <base> <target>
 
 See the chapter on git-rebase for more information.
-
