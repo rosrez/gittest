@@ -1,0 +1,64 @@
+@@
+1. WHAT IS A REBASE?
+
+The basic form of git-rebase is:
+
+git rebase <base> <target>
+
+Performing a rebase is like telling Git, "I want to pretend that <target> was actually branched from <base>.
+Take all of the commits from <target>, and pretend that they happened after <base>".
+
+Let's imagine we have the following history, with feature3-1 topic branch and hotfix branches diverging, with master as their common base:
+
+$ git log --oneline --all --graph --decorate -3
+* 45e75d5 (HEAD -> hotfix) fixed version in the version file
+| * 1d30be7 (feature3-1) added extra setting to feature3
+|/  
+* 2b16023 (master) refined cherry-pick
+
+We would like to merge our hotfix into master first. This is easy because hotfix is directly upstream from master. So all this merge does is fast forward to the tip of the hotfix branch
+
+$ git checkout master
+Switched to branch 'master'
+
+$ git merge hotfix
+Updating 2b16023..45e75d5
+Fast-forward
+ test/version.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+Now our history becomes this:
+
+$ git log --oneline --all --graph --decorate -3
+* 45e75d5 (HEAD -> master, hotfix) fixed version in the version file
+| * 1d30be7 (feature3-1) added extra setting to feature3
+|/  
+* 2b16023 refined cherry-pick
+
+When our feature branch is ready, we also need to merge it into master. Since the feature branch has diverged from master,
+an attempt to merge feature3-1 into master will result in a non-fast-forward merge. This may cause conflicts. To prevent this,
+we run:
+
+$ git rebase master feature3-1
+First, rewinding head to replay your work on top of it...
+Applying: added extra setting to feature3
+
+This has brought feature3-1 directly upstream of master.
+
+$ git log --oneline --all --graph --decorate -3
+* 64b3b5e (HEAD -> feature3-1) added extra setting to feature3
+* 45e75d5 (master, hotfix) fixed version in the version file
+* 2b16023 refined cherry-pick
+
+We see that the master's commits come first in the history, followed by the commits from our feature3-1 branch. That is, 
+Git has rewound the feature branch's head to the common base with master and applied the master's unique changes first 
+and then its own changes.
+
+Now merging feature3-1 into master becomes trivial:
+
+$ git merge feature3-1
+Updating 45e75d5..64b3b5e
+Fast-forward                            <--- FAST FORWARD
+ test/feature3.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
