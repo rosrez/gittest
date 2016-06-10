@@ -1,0 +1,106 @@
+@@
+1. CHERRY PICKING
+
+Suppose we have a history graph like this:
+
+* 80d9319 comment 2 in feature2.txt     <--- MASTER
+* 7b1af4b comment 1 in feature1.txt
+| * 053b1e2 updated version             <--- CHERRYPICK
+| * ff1e86a added comment
+|/  
+*   4d45fcb Merge branch 'feature3'     <--- COMMON BASE
+
+If we are on commit 80d9319 and we run "git-cherry-pick 053b1e2", Git will take the changes that were introduced 
+in commit 053b1e2 (and only in that commit!) and replay them *as a new commit* on top of 80d9319. So our commit history
+will look as follows:
+
+* 053b1e2'---- commit msg ---------     <--- MASTER
+* 80d9319 comment 2 in feature2.txt
+* 7b1af4b comment 1 in feature1.txt
+| * 053b1e2 updated version             <--- CHERRYPICK
+| * ff1e86a added comment
+|/  
+*   4d45fcb Merge branch 'feature3'     <--- COMMON BASE
+
+The reason you end up with a *copy* of commit 053b1e2 rather than commit 053b1e2 itself is due to the way commits 
+are constructed. Recall that the parent commit is part of a commit's hash. So despite containing the exact same changes,
+author information and timestamp; 053b1e2' will have a different parent from 053b1e2, giving it a different hash.
+
+@@
+2. MERGING CHANGES FROM A FEATURE BRANCH WITH GIT-CHERRY-PICK
+
+Again, supposed we have returned to our initial state:
+
+* 80d9319 comment 2 in feature2.txt     <--- MASTER
+* 7b1af4b comment 1 in feature1.txt
+| * 053b1e2 updated version             <--- CHERRYPICK
+| * ff1e86a added comment
+|/  
+*   4d45fcb Merge branch 'feature3'     <--- COMMON BASE
+
+A common workflow in Git is to develop features on small branches, and merge the features one at a time into
+the master branch.
+
+As we can see, in our scenario 'master' has been updated since 'cherrypick' was created. To avoid potential conflicts
+when 'cherrypick' is merged with 'master', we want to bring master's changes into 'cherrypick'. Because 'master' is
+the *base* branch, we want to play 'cherrypick's commits *on top* of master. Essentially, we want to change commit
+ff1e86a parent from 4d45fcb (merge base) to 80d9319.
+
+This can be achieved with git-cherry-pick. First, we need to create a temporary branch at commit 80d9319.
+
+$ git checkout -b cherrypick-tmp master
+Switched to a new branch 'cherrypick-tmp'
+
+Now that we have a base on commit 80d9319 (tip of master, though in a different branch), we can cherry-pick all of
+'cherrypick' branch's commits on top of it:
+
+$ git cherry-pick ff1e86a 053b1e2
+[cherrypick-tmp dd69612] added comment
+ Date: Fri Jun 10 12:53:28 2016 +0200
+ 1 file changed, 1 insertion(+)
+[cherrypick-tmp 42e5788] updated version
+ Date: Fri Jun 10 12:54:21 2016 +0200
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Now our history becomes this:
+
+$ git log --oneline --all --graph -7
+* 42e5788 updated version                       <--- CHERRYPICK-TMP (with CHERRYPICK's commits applied on top of MASTER)
+* dd69612 added comment
+* 80d9319 comment 2 in feature2.txt             <--- MASTER
+* 7b1af4b comment 1 in feature1.txt
+| * 053b1e2 updated version                     <--- CHERRYPICK
+| * ff1e86a added comment
+|/  
+*   4d45fcb Merge branch 'feature3'
+
+Now all that's left to do is to point CHERRYPICK at commit 42e5788 (the tip of CHERRYPICK-TMP) and delete CHERRYPICK-TMP.
+We do this with the git-reset command, which points HEAD (and therefore the current branch) at a specified commit.
+The --hard option ensures our working treee is updated as well.
+
+$ git checkout cherrypick
+Switched to branch 'cherrypick'
+ 
+$ git reset --hard cherrypick-tmp
+HEAD is now at 42e5788 updated version
+ 
+$ git branch -D cherrypick-tmp
+Deleted branch cherrypick-tmp (was 42e5788).
+
+Our topic branch's history (i.e. cherrypick's) now is: 
+
+$ git log --oneline --all --graph -6
+* 42e5788 updated version                       <--- CHERRYPICK
+* dd69612 added comment
+* 80d9319 comment 2 in feature2.txt             <--- COMMIT 80d9319 FROM MASTER <--- MASTER STILL POINTS HERE
+* 7b1af4b comment 1 in feature1.txt             <--- COMMIT 7b1af4b FROM MASTER
+*   4d45fcb Merge branch 'feature3'
+
+It is now safe to merge our topic branch (cherrypick) into master since cherrypick is now upstream from master. So the merge
+will solely consist of a fast forward.
+
+NOTE: The same effect can be achieved with just a single command:
+$ git rebase <base> <target>
+
+See the chapter on git-rebase for more information.
+
