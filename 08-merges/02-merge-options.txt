@@ -1,0 +1,9 @@
+git merge
+---------
+Merges the current (tracking) branch with its associated remote branch.
+
+git merge remote/branch
+-----------------------
+Will merge the current branch with ANY REMOTE BRANCH.
+
+

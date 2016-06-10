@@ -1,0 +1,91 @@
+@@
+1. RESOLVING A MERGE CONFLICT.
+
+Suppose we made conflicting changes to a file in a branch called mediumfeature2 and in the mainline (master). We pushed mediumfeature2 to a shared remote repo and are now trying to merge mediumfeature2 into master.
+
+We perform git-fetch and then try to merge:
+
+$ git merge origin/mediumfeature2
+error: Your local changes to the following files would be overwritten by merge:
+	conflict.txt
+Please, commit your changes or stash them before you can merge.
+Aborting
+
+Git noticed the conflict, but our local changes are not saved anywhere (we haven't committed to master yet).
+
+2. We do a git-commit
+
+3. We attempt git-merge a second time:
+
+$ git merge origin/mediumfeature2
+Auto-merging conflict.txt
+CONFLICT (content): Merge conflict in conflict.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+4. We invoke git-diff to see the conflict(s):
+
+$ git diff
+diff --cc conflict.txt
+index 2f8b8d8,f685c06..0000000
+--- a/conflict.txt
++++ b/conflict.txt
+@@@ -1,1 -1,1 +1,5 @@@
+++<<<<<<< HEAD
+ +CONFLICT_VALUE=MAINLINE VALUE
+++=======
++ CONFLICT_VALUE=BRANCH
+++>>>>>>> origin/mediumfeature2
+
+We see the conflicting filenames, the lines and which branch the individual lines come from.
+
+5. In this situation, we can either stick to our version, accept the version being merged or edit the file and provide something else. For accepting versions from either branch, we have options to git-checkout:
+
+git checkout --ours <--- STICK TO OUR VERSION
+git checkout --theirs <---- OVERWRITE WITH THE OTHER BRANCH'S VERSION
+
+Suppose we want to accept the other branche's version. We type:
+
+git checkout --theirs -- conflict.txt
+
+This individually applies the 'theirs' setting to that single file. So we can resolve the conflict by doing selective checkouts one by one.
+
+We see that the command worked as intended:
+
+$ cat conflict.txt 
+CONFLICT_VALUE=BRANCH
+
+that is, the 'branch' version of the file was merged into master.
+
+6. We now invoke git-status to see the result of the change on a branch level:
+
+git status
+On branch master
+Your branch is ahead of 'origin/master' by 6 commits.
+  (use "git push" to publish your local commits)
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+	both modified:   conflict.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Git commit sees the modification done by the previous command, but it doesn't automatically add/commit that modified file. So we need to apply the regular add/commit sequence to it.
+
+EXAMPLE: UNCONFLICTING FILES
+
+If we had some unconflicting changes in branch 'mediumfeature2', a FAILED MERGE WOULD nevertheless STAGE all unconflicting (and therefore changed) files. They would be waiting in the staging area until other conflicting files would be edited/checked out to resolve conflicts and then specifically added to the staging area to complete the commit. Then, a single commit would actually combine all the changes into one 'hash'.
+
+This is what goes on behind the scenes when you pull from a remote: it fetches branches, does a merge on the branch you are on and then commits changes that result from the merge with a default comment: merged from origin/branchname.
+
+EXAMPLE: RACE CONDITIONS
+
+There is no server-side conflict resolution, so whoever is trying to push and sees the conflict message should pull first and align the local branch to the remote version. Then it's safe to push.
+
+git pull origin +master:master
+------------------------------
+Overwrite any local changes with the contents of the remote branch (origin/master).
+
+A subsequent push will succeed.
