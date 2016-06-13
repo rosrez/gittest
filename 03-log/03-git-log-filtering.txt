@@ -57,45 +57,4 @@ $ git log --oneline --grep=rebase --grep=amend --all-match      # searches for '
 66e087e amend & interactive rebase                      <--- match: rebase & amend
 a59d1e3 rebase-i: change1 -- amended                    <--- match: rebase & amend
 
-@@
-5. FILTER BY INTRODUCED DIFF
-
-If you need to find out when a function was introduced or variables started to be used, you can tell
-Git to look through the diff on each commit for a string.
-
-$ git log -S__get_link_kind
-commit fbea6115645a126de87bbcf51371050dde1a5b39
-Author: Jiri Pirko <jiri@resnulli.us>
-Date:   Thu Jan 23 17:52:53 2014 +0100
-
-    introduce support for slave info data
-    
-    Signed-off-by: Jiri Pirko <jiri@resnulli.us>
-
-@@
-6. FILTERING BY PATH
-
-You can limit git-log output only to changes introduced to a given file or directory. To do so, you
-specify a directory or a file name. The path argument always comes last and is generally preceded
-by double dashes (--) to separate paths from the options.
-
-(CHANGES TO FILE)
-
-$ git log --oneline -- test/version.txt
-45e75d5 fixed version in the version file
-42e5788 updated version
-9cce118 version 2 in version.txt
-5db08ca version.txt
-
-(CHANGES TO DIRECTORY CONTENTS)
-
-$ git log --oneline -- test
-64b3b5e added extra setting to feature3
-45e75d5 fixed version in the version file
-42e5788 updated version
-..... <omitted for brevity> .....
-d92d0c8 feature2 development
-08e83ce Change in mainline: diverges from feature2
-0a8efd9 feature1 change
-
 

@@ -1,0 +1,88 @@
+@@
+1. SEARCH BY INTRODUCED DIFF
+
+If you need to find out when a function was introduced or variables started to be used, you can tell
+Git to look through the diff on each commit for a string.
+
+$ git log -S__get_link_kind
+commit fbea6115645a126de87bbcf51371050dde1a5b39
+Author: Jiri Pirko <jiri@resnulli.us>
+Date:   Thu Jan 23 17:52:53 2014 +0100
+
+    introduce support for slave info data
+    
+    Signed-off-by: Jiri Pirko <jiri@resnulli.us>
+
+@@
+2. SEARCHING BY PATH
+
+You can limit git-log output only to changes introduced to a given file or directory. To do so, you
+specify a directory or a file name. The path argument always comes last and is generally preceded
+by double dashes (--) to separate paths from the options.
+
+(CHANGES TO FILE)
+
+$ git log --oneline -- test/version.txt
+45e75d5 fixed version in the version file
+42e5788 updated version
+9cce118 version 2 in version.txt
+5db08ca version.txt
+
+(CHANGES TO DIRECTORY CONTENTS)
+
+$ git log --oneline -- test
+64b3b5e added extra setting to feature3
+45e75d5 fixed version in the version file
+42e5788 updated version
+..... <omitted for brevity> .....
+d92d0c8 feature2 development
+08e83ce Change in mainline: diverges from feature2
+0a8efd9 feature1 change
+
+@@
+3. OBTAINING ALL CHANGES TO A SPECIFIC FUNCTION IN A SPECIFIC FILE: git log -L
+
+The following will output all changes to the main() function from test/prog.c:
+
+$ git log -L :main:test/prog.c
+
+commit 6a362b30ddc5095b22ac79739a3243661cda5f5b
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Mon Jun 13 18:51:41 2016 +0200
+
+    updated prog.c
+
+diff --git a/test/prog.c b/test/prog.c
+--- a/test/prog.c
++++ b/test/prog.c
+@@ -4,5 +9,12 @@
+ int main(int argc, char *argv[])
+ {
+-       printf("Hello user\n");
++        char name[32];
++
++        if (argv[1])
++            strncpy(name, argv[1], sizeof(name));
++        else
++            strcpy(name, "user");
++       
++        greeting(name);
+        return 0;
+ }
+
+commit 60d671bab9671afaa655e43dc30eb098d6fd0590
+Author: root <root@localhost.localdomain>
+Date:   Mon Jun 13 18:46:46 2016 +0200
+
+    prog.c initial commit
+
+diff --git a/test/prog.c b/test/prog.c
+--- /dev/null
++++ b/test/prog.c
+@@ -0,0 +4,5 @@
++int main(int argc, char *argv[])
++{
++       printf("Hello user\n");
++       return 0;
++}
+
