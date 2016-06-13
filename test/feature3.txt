@@ -1,3 +1,4 @@
 feature3 = 03
 # useful comment
 extra setting to feature3
+feature 3-2
