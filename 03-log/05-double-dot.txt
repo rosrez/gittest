@@ -1,0 +1,91 @@
+@@
+1. DOUBLE-DOT NOTATION - SEE CHANGES IN COMMIT #2 THAT ARE NOT IN COMMIT #1 (COMMIT #2 - COMMIT #1).
+
+When given two commit names, git-log shows anything that is reachable from the SECOND commit, EXCLUDING everything that is reachable from the FIRST.
+
+@@
+2. DOUBLE-DOT - ANCESTOR & DESCENDANT COMMITS
+
+Suppose we have two commits, of which one follows the other in the same branch, i.e. hash2 is a later commit and hash1 
+is an earlier commit. Then
+
+$ git log hash1..hash2
+
+displays a range of commits starting from hash1 (exclusive) to hash2 (inclusive). This also can be used to easily
+check if one commit is an ancestor of the other, i.e. if:
+
+$ git log hash2..hash1
+
+doesn't produce any output and the reverse:
+
+$ git log hash1..hash2
+
+does, then hash2 *is a descendant* of hash1.
+
+@@
+3. DOUBLE DOT NOTATION - DIVERGING BRANCHES (PREPARATION)
+
+1) Let us create new branch and make some changes in it:
+
+$ git checkout -b compare2
+Switched to a new branch 'compare2'
+
+$ echo "feature2.extra3 = extra stuff #2.3" >> test/feature2.txt
+
+$ git commit -am 'added feature2.extra3'
+[compare2 1f0ab8f] added feature2.extra3
+ 1 file changed, 1 insertion(+)
+
+2) Show recent history of "compare2" branch: 
+
+$ git log --pretty=oneline -3
+1f0ab8f092713ef61e9d79a67118f3ba32cc2d7a added feature2.extra3  <--- CHANGE MADE IN "compare2"
+ab6b31a284efb64355a0f7d8c2b1fe71c852c2cd Merge branch 'compare' <--- THE POINT WHEN "compare2" FORKED OFF "master"
+aeac2085dda0d25cc7376b06527088d0ccabbab9 mainline change 2
+
+
+3) Then switch back to "master" and make two changes as two distinct commits:
+
+$ git checkout master
+Switched to branch 'master'
+
+$ echo "MAINLINE CHANGE 3" >> test/mainline.txt 
+
+$ git commit -am 'mainline change 3'
+[master 03efd47] mainline change 3
+ 1 file changed, 1 insertion(+)
+
+$ echo "MAINLINE CHANGE 4" >> test/mainline.txt
+
+$ git commit -am 'mainline change 4'
+[master cebc7a3] mainline change 4
+ 1 file changed, 1 insertion(+)
+
+4) Show recent history of "master":
+
+$ git log --pretty=oneline -3
+cebc7a3f920d348b9c4360d685cbeb7eb384eb3b mainline change 4      <--- 2nd CHANGE IN "master"
+03efd4717274d75ea253e2dcef9f369b92a34454 mainline change 3      <--- 1st CHANGE IN "master"
+ab6b31a284efb64355a0f7d8c2b1fe71c852c2cd Merge branch 'compare' <--- THE POINT WHEN "compare2" WAS CREATED
+
+@@
+4. DOUBLE DOT NOTATION - TWO DIVERGING BRANCHES
+
+1) Make sure we're on branch "master"
+
+$ git checkout master
+
+2) $ git log --pretty=oneline master..compare2
+1f0ab8f092713ef61e9d79a67118f3ba32cc2d7a added feature2.extra3
+
+As we can see, here git-log only outputs the commit that is in "compare2" but not in "master".
+
+3) We can also reverse the order of commits to see what has changed in "master" since the branches diverged:
+
+$ git log --pretty=oneline compare2..master
+cebc7a3f920d348b9c4360d685cbeb7eb384eb3b mainline change 4
+03efd4717274d75ea253e2dcef9f369b92a34454 mainline change 3
+
+Now we see the two commits made in "master" since the common ancestor commit with "compare2".
+
+

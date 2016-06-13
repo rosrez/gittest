@@ -1,6 +1,51 @@
-git log
--------
-Lists all commits, newest first.
+@@
+1. BASIC GIT-LOG
+
+git-log lists all commits in the current branch, newest commit first.
+
+$ git log
+commit c7ffaf6a4e3b17743173e07911c6fa1a1686375a  <---------- NEWEST COMMIT
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Sun Nov 22 22:54:21 2015 +0100
+
+    Global settings
+
+commit abb90e9088692e0594fa714f4e5be1b8e4a25276  <----------- EARLIER COMMIT
+Author: rosrez <rosrez@o2.pl>
+Date:   Sun Nov 22 22:21:45 2015 +0100
+
+    Initial commit
+
+@@
+2. GIT-LOG [rev]
+
+When "rev" is not specified, the command defaults to:
+
+$ git log HEAD
+
+which displays all of the branch's commits in reverse chronological order, starting from the tip of 
+the current branch (HEAD).
+
+When "rev" is not HEAD, git-log will display the commit specified by the "rev" argument, and the chain of parent
+commits that lead to it. We can specify a commit by:
+
+1) its hash:
+
+$ git log c7ffa
+
+2) a ref, like a branch or tag:
+
+$ git log hotfix    # the tip of the "hotfix" branch
+
+3) a relative ref:
+
+$ git log HEAD^2
+
+@@
+3. RANGES OF HASHES (DOUBLE-DOT OR TRIPLE-DOT)
+
+We can get list of commits for a range of hashes; the range is specified in the double-dot or triple-dot notation.
+See texts in this section about the two notations.
 
 git log --pretty=oneline
 ------------------------
@@ -14,76 +59,5 @@ fd3f9cff94719ffbc5d63d2e50364b094db6c7ea Added basic workflow               <---
 3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions    <---- C1
 c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
 abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
-
-git log <hash>
-------------
-If you specify an individual hash (i.e. commit), then the command will display that commit and all commits before that:
-
-$ git log --pretty=oneline 3123534c8a8ee67adebc02e01b93455f215fbffd
-3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions
-c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
-abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
-
-We can just provide a shorthand version (5 or 7 digits) of the commit hash, like below, and get the same output:
-
-$ git log --pretty=oneline 31235
-3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions
-c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
-abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
-
-git will only complain if the first digits are ambiguous, in which case all we need to do is add a few extra digits to resolve the ambiguity.
-
-git log hash1..hash2
--------------------
-Displays a range of commits starting from hash1 (exclusive) to hash2 (inclusive):
-
-$ git log --pretty=oneline 31235..fd3f9c
-fd3f9cff94719ffbc5d63d2e50364b094db6c7ea Added basic workflow
-
-Above, we labelled 31235 as C1 and fd3f9 as C2. C1 and C2 are just a single commit apart, i.e. C2 immediately follows C1. As we can see, only C2 is output.
-
-NOTE: Remember the right order of commits, this has to be chronological (the earlier commit must come first).
-
-HEAD means the newest commit (in the current branch).
-
-NOTE: 'git log HEAD' is equivalent to just 'git log'.
-
-Commit notation shortcuts
--------------------------
-
-There is a few shortcuts that allow you to modify the commit hash/hash range.
-
-^ - goes back one commit, can be applied multiple times, like this:
-
-git log HEAD^^^
-
-The latter is more easily obtained with tilde:
-
-git log HEAD~3
-
-We can also apply the same notations to hashes:
-
-git log c7ffa^
-
-Or to ranges:
-
-git log HEAD~4..HEAD~2
-
-===========================
-
-EXAMPLE 1 - regular output
-
-git log
-commit c7ffaf6a4e3b17743173e07911c6fa1a1686375a  <---------- NEWEST COMMIT
-Author: Oleg Rosowiecki <rosrez@o2.pl>
-Date:   Sun Nov 22 22:54:21 2015 +0100
-
-    Global settings
-
-commit abb90e9088692e0594fa714f4e5be1b8e4a25276  <----------- EARLIER COMMIT
-Author: rosrez <rosrez@o2.pl>
-Date:   Sun Nov 22 22:21:45 2015 +0100
-
-    Initial commit
 
 

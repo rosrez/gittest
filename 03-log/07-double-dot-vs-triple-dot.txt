@@ -1,0 +1,9 @@
+@@
+1. ALL GIT-LOG OPTIONS ARE SUPPORTED WITH DOUBLE-DOT/TRIPLE-DOT NOTATION
+
+-p, --oneline and all other options apply when used with commit ranges in .. or ... notation.
+
+@@
+2. GITK ALSO SUPPORTS DOUBLE AND TRIPLE DOT NOTATION.
+
+Gitk can be useful to get a synopsis of changes made in one branch that are not in the other (double dot) or just see differences between two branches. Gitk will display the graph of diverging commits as well as diffs.

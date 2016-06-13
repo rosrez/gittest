@@ -1,0 +1,35 @@
+@@
+1. GIT LOG/SHOW WITH RELATIVE REFS
+
+HEAD is a ref, i.e. a reference to a commit. HEAD is a special ref that points to the tip of the current branch. 
+See more on HEAD and other refs in the "refs section". We use references relative to HEAD here for simplicity.
+
+You can use relative refs such as HEAD~2 or HEAD^2^ as arguments to git-show/git-log or any other Git command
+that accepts commit references.
+
+^ - is used to mean the commit's parent. For example, HEAD^ is the current branch's last commit but one 
+(i.e. the parent commit of the last commit).
+
+^ notation also accepts the number of parent. This can be used with merge commits that have multiple parents, for example:
+
+$ git checkout master       # switch to master branch
+$ git merge feature-branch  # merge feature-branch into master
+$ git log HEAD^2            # check the previous commits in feature-branch that lead to the merge commit
+
+~{n} is used to refer to the n-th commit back from the current. That is, HEAD~1 is equivalent to HEAD^, HEAD~2 is 
+equivalent to HEAD^^, and so on.
+
+^ can be combined with other relative ref markers, for example, HEAD^2~3 means the "grandparent" 
+of the "second parent" commit that lead to the current commit.
+
+@@
+2. MORE EXAMPLES
+
+# Only list commits that are parent of the second parent of a merge commit
+$ git log HEAD^2
+
+# Remove the last 3 commits from the current branch
+$ git reset HEAD~3
+
+# Interactively rebase the last 3 commits on the current branch
+git rebase -i HEAD~3

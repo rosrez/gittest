@@ -1,0 +1,96 @@
+@@
+1. LIMITING THE NUMBER OF DISPLAYED COMMITS
+
+To limit git-log output to a specific number of commits, use -{n}:
+
+$ git log -2
+commit af8e3a5d388bbbf281e038d2e136a4c0041a773c
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Mon Jun 13 10:52:11 2016 +0200
+
+    renamed folder to "branches"
+
+commit af49ba3dc7a667536f9bd1038b31b660e5478c9c
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Fri Jun 10 15:18:22 2016 +0200
+
+    added rebase chapter
+
+@@
+2. ONE LINE PER COMMIT
+
+Use --oneline or --pretty=oneline to condense git-log output to one line per commit:
+
+$ git log --oneline -3
+af8e3a5 renamed folder to "branches"            <--- SHORTHAND HASHES
+af49ba3 added rebase chapter
+64b3b5e added extra setting to feature3
+
+$ git log --pretty=oneline -3
+af8e3a5d388bbbf281e038d2e136a4c0041a773c renamed folder to "branches"   <--- FULL HASHES
+af49ba3dc7a667536f9bd1038b31b660e5478c9c added rebase chapter
+64b3b5e9f8353c3cca1ee1500a64be18773b5ec9 added extra setting to feature3
+
+@@
+3. PATCH ALONG WITH COMMIT INFO
+
+Use -p to display the patch contents along with commit info:
+
+@@
+4. STATISTICS OPTION
+
+Git can be instructed to output the statistics about file changes in individual commits.
+
+$ git log --stat hotfix -1
+commit 45e75d586d2a4956230b04704f469c921d02772e
+Author: Oleg Rosowiecki <rosrez@o2.pl>
+Date:   Fri Jun 10 14:35:33 2016 +0200
+
+    fixed version in the version file
+
+ test/version.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+--stat can be combined with --oneline to produce a more condensed output:
+
+$ git log --oneline --stat hotfix -1
+45e75d5 fixed version in the version file
+ test/version.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+@@
+5. BRANCH POINTERS IN GIT-LOG OUTPUT: git log --decorate
+
+The --decorate option will tell git to show where individual branches point to:
+
+$ git log --oneline -5 --decorate
+af8e3a5 (HEAD -> master, origin/master, origin/HEAD) renamed folder to "branches" <--- HEAD, origin/master, etc.
+af49ba3 added rebase chapter
+64b3b5e (feature3-1) added extra setting to feature3                              <--- feature3-1
+45e75d5 (hotfix) fixed version in the version file                                <--- hotfix
+2b16023 refined cherry-pick
+
+@@
+6. COMMIT GRAPH: git log --graph
+
+To see the log in a graph form, use --graph:
+
+$ git log --oneline --graph --decorate
+* af8e3a5 (HEAD -> master, origin/master, origin/HEAD) renamed folder to "branches"
+* af49ba3 added rebase chapter
+* 64b3b5e (feature3-1) added extra setting to feature3
+* 45e75d5 (hotfix) fixed version in the version file
+* 2b16023 refined cherry-pick
+* 9243a94 (origin/cherrypick, cherrypick) merge and cherry-pick intro texts
+* 42e5788 updated version
+* dd69612 added comment
+* 80d9319 comment 2 in feature2.txt
+* 7b1af4b comment 1 in feature1.txt
+*   4d45fcb Merge branch 'feature3'
+|\  
+| * 7e80ea8 (feature3) finished feature 3
+* | 5493e65 (hotfix3) Fixed whitespace
+|/  
+* d7ddde0 some more files renamed
+
+

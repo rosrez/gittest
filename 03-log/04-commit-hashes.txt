@@ -1,0 +1,25 @@
+@@
+1. REFERENCING COMMITS BY HASHES
+
+The following illustrates the use of commit hashes with git-log, but the same notation applies for all Git commands that
+refer to individual commits.
+
+git log <hash>
+------------
+If you specify an individual hash (i.e. commit), then the command will display that commit and all commits before that:
+
+$ git log --pretty=oneline 3123534c8a8ee67adebc02e01b93455f215fbffd
+3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions
+c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
+abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
+
+We can just provide a shorthand version (5 or 7 digits) of the commit hash, like below, and get the same output:
+
+$ git log --pretty=oneline 31235
+3123534c8a8ee67adebc02e01b93455f215fbffd added log and show descriptions
+c7ffaf6a4e3b17743173e07911c6fa1a1686375a Global settings
+abb90e9088692e0594fa714f4e5be1b8e4a25276 Initial commit
+
+Git will only complain if the first digits are ambiguous, in which case all we need to do is add a few extra digits to resolve the ambiguity.
+
+

@@ -1,0 +1,77 @@
+@@
+1. TRIPLE-DOT - SHOW ALL COMMITS SINCE COMMON ANCESTOR
+
+With the triple dot notation, we can combine "commit2-commit1" and "commit1-commit2" differences in a single output:
+
+$ git log --pretty=oneline master...compare2
+cebc7a3f920d348b9c4360d685cbeb7eb384eb3b mainline change 4
+03efd4717274d75ea253e2dcef9f369b92a34454 mainline change 3
+1f0ab8f092713ef61e9d79a67118f3ba32cc2d7a added feature2.extra3
+
+The order of the arguments to triple dot becomes irrelevant, so swapping the commits produces the same output:
+
+$ git log --pretty=oneline compare2...master
+cebc7a3f920d348b9c4360d685cbeb7eb384eb3b mainline change 4
+03efd4717274d75ea253e2dcef9f369b92a34454 mainline change 3
+1f0ab8f092713ef61e9d79a67118f3ba32cc2d7a added feature2.extra3
+
+@@
+5. GIT-DIFF ALSO SUPPORTS TRIPLE DOT
+
+It is possible to supply triple dot to git-diff. The output is pretty much reverse to git-log:
+
+1) Triple dot - compare2...master:
+
+$ git diff compare2...master
+diff --git a/test/mainline.txt b/test/mainline.txt
+index 1362a1f..43f74f5 100644
+--- a/test/mainline.txt
++++ b/test/mainline.txt
+@@ -2,3 +2,5 @@ MAINLINE CHANGE
+ diff change 1
+ diff change 2
+ MAINLINE CHANGE 2
++MAINLINE CHANGE 3
++MAINLINE CHANGE 4
+
+Only shows changes in "master" that are not in "compare2".
+
+2) Reverse the order of commit arguments:
+
+$ git diff master...compare2
+diff --git a/test/feature2.txt b/test/feature2.txt
+index b5a9226..a148abd 100644
+--- a/test/feature2.txt
++++ b/test/feature2.txt
+@@ -1,3 +1,4 @@
+ feature2 = 02
+ feature2.extra1 = extra stuff #2.1
+ feature2.extra2 = extra stuff #2.2
++feature2.extra3 = extra stuff #2.3
+
+This only shows 
+
+3) Double dot:
+
+$ git diff compare2..master
+diff --git a/test/feature2.txt b/test/feature2.txt
+index a148abd..b5a9226 100644
+--- a/test/feature2.txt
++++ b/test/feature2.txt
+@@ -1,4 +1,3 @@
+ feature2 = 02
+ feature2.extra1 = extra stuff #2.1
+ feature2.extra2 = extra stuff #2.2
+-feature2.extra3 = extra stuff #2.3
+diff --git a/test/mainline.txt b/test/mainline.txt
+index 1362a1f..43f74f5 100644
+--- a/test/mainline.txt
++++ b/test/mainline.txt
+@@ -2,3 +2,5 @@ MAINLINE CHANGE
+ diff change 1
+ diff change 2
+ MAINLINE CHANGE 2
++MAINLINE CHANGE 3
++MAINLINE CHANGE 4
+
+Shows all the changes ("master" vs. "compare2")
