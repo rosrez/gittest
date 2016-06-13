@@ -93,4 +93,33 @@ $ git log --oneline --graph --decorate
 |/  
 * d7ddde0 some more files renamed
 
+NOTE: --graph is mostly usefull with --all (see next)
 
+@@
+7. SHOWING COMMITS FROM ALL BRANCHES
+
+Suppose we're on a master branch. By default, git-log outputs only commits that lead to the current HEAD. These
+commits *may be* tips of other branches, which is detected when we use the --decorate option
+
+$ git log --oneline --decorate -7
+05d5776 (HEAD -> master) master update
+
+<NO COMMIT 3cfe205 - DOESN'T BELONG TO THIS BRANCH'S HISTORY>
+
+b74fbcd (origin/master, origin/HEAD) major updates to git-log
+af8e3a5 renamed folder to "branches"
+af49ba3 added rebase chapter
+64b3b5e (feature3-1) added extra setting to feature3
+45e75d5 (hotfix) fixed version in the version file
+2b16023 refined cherry-pick
+
+Now let's display commits from all branches
+
+$ git log --oneline --decorate -7 --all
+05d5776 (HEAD -> master) master update
+3cfe205 (feature3-2) updated version to 4.2                     <--- COMMIT TO feature3-2 BRANCH: VISIBLE DUE TO --all
+b74fbcd (origin/master, origin/HEAD) major updates to git-log
+af8e3a5 renamed folder to "branches"
+af49ba3 added rebase chapter
+64b3b5e (feature3-1) added extra setting to feature3
+45e75d5 (hotfix) fixed version in the version file
