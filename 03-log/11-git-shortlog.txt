@@ -1,0 +1,19 @@
+@@
+1. GIT-SHORTLOG WILL GROUP COMMITS BY AUTHOR AND LIMIT OUTPUT TO A SINGLE LINE PER COMMIT
+
+$ cd iproute
+$ git shortlog
+....
+Alex Badea (2):
+      ip xfrm state: parse and print "icmp" and "af-unspec" flags
+      ip xfrm policy: allow different tmpl family
+
+Alex Pilon (1):
+      Allow specifying bridge port STP state by name rather than number.
+
+Alexander Duyck (4):
+      add support for skbedit action
+      add support for multiq qdisc
+      libnetlink: Use ifinfomsg instead of rtgenmsg in rtnl_wilddump_req_filter
+      iproute2: act_ipt fix xtables breakage on older versions.
+....
